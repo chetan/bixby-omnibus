@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/chetan/omnibus-software.git
+  revision: 9ca67ef078dbd61a41c5070296de3c564b0037a9
+  specs:
+    omnibus-software (0.0.1)
+
+GIT
   remote: https://github.com/opscode/omnibus-ruby.git
   revision: e875bb73fbbce832f89ff59a58e5bc3ede05b6ea
   specs:
@@ -8,12 +14,6 @@ GIT
       ohai (>= 0.6.12)
       rake (>= 0.9)
       uber-s3
-
-GIT
-  remote: https://github.com/opscode/omnibus-software.git
-  revision: b22fa6b16ff7f475049c668d80c9e970ec6840d1
-  specs:
-    omnibus-software (0.0.1)
 
 GEM
   remote: https://rubygems.org/

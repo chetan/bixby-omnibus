@@ -1,6 +1,6 @@
 
-name "bixby-common"
-version "0.3.0"
+name "systemu"
+version "2.5.2"
 
 dependencies %w{ rubygems }
 

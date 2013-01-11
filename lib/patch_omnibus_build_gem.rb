@@ -23,12 +23,16 @@ module Omnibus
 
       # Helper for building gems
       def build_gem(name, version)
-        gem cmd_str <<-EOF
+        cmd = <<-EOF
           install #{name}
             -v #{version}
             -n #{@builder.install_dir}/bin
             --no-rdoc --no-ri
         EOF
+        if ENV["GEM_SERVER"] then
+          cmd += " --source " + ENV["GEM_SERVER"]
+        end
+        gem(cmd_str(cmd))
       end
 
     end

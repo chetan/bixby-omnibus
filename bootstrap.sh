@@ -23,6 +23,14 @@ function is_ubuntu() {
   fi
 }
 
+function unknown_distro() {
+    echo
+    echo
+    echo "ERROR: only Ubuntu and CentOS are current supported!"
+    echo
+    exit 1
+}
+
 echo "BUILD START - `date`" > $BUILD_LOG
 echo "##########################################" > $BUILD_LOG
 echo > $BUILD_LOG
@@ -30,7 +38,7 @@ echo > $BUILD_LOG
 # need build tools
 if [[ -z `which gcc` ]]; then
   echo "installing build tools (via sudo)"
-  if [[ is_ubuntu ]]; then
+  if is_ubuntu; then
     echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > 30apt-proxy
     sudo mv 30apt-proxy /etc/apt/apt.conf.d
     sudo apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
@@ -41,19 +49,24 @@ if [[ -z `which gcc` ]]; then
     sudo ruby /var/lib/gems/1.8/gems/rubygems-update-*/setup.rb >> $BUILD_LOG
     sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
 
-  elif [[ is_centos ]]; then
+  elif is_centos; then
     sudo -E yum -qy groupinstall "Development Tools" >> $BUILD_LOG
     sudo -E yum -qy install openssl-devel zlib-devel readline-devel curl-devel >> $BUILD_LOG
+
+  else
+    unknown_distro
   fi
 fi
 
 # install git
 if [[ -z `which git` ]]; then
   echo "installing git (via sudo)"
-  if [[ is_ubuntu ]]; then
+  if is_ubuntu; then
     sudo apt-get -qqy install git-core >> $BUILD_LOG
-  elif [[ is_centos ]]; then
+  elif is_centos; then
     sudo yum -qy install git >> $BUILD_LOG
+  else
+    unknown_distro
   fi
 fi
 

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-USER=chetan
-GROUP=chetan
 BUILD_LOG="/tmp/bixby-omnibus.log"
 
 # for wget/curl/yum proxy caching
@@ -62,10 +60,10 @@ fi
 # setup base dir
 echo "creating /opt/bixby (via sudo)"
 sudo mkdir -p /var/cache/omnibus
-sudo chown $USER:$GROUP /var/cache/omnibus
+sudo chown $USER /var/cache/omnibus
 sudo rm -rf /opt/bixby
 sudo mkdir /opt/bixby
-sudo chown $USER:$GROUP /opt/bixby
+sudo chown $USER /opt/bixby
 
 # omnibus!
 cd

@@ -65,13 +65,11 @@ if [[ -z `which gcc` ]]; then
     sudo -E yum -qy groupinstall "Development Tools" >> $BUILD_LOG
     sudo -E yum -qy install openssl-devel zlib-devel readline-devel curl-devel >> $BUILD_LOG
     # sudo -E yum -qy install ruby ruby-devel rubygems >> $BUILD_LOG
+    unalias cp rm mv
 
   else
     unknown_distro
   fi
-
-  # install rvm
-  \curl -L https://raw.github.com/chetan/rvm/noprompt/binscripts/rvm-installer | bash -s stable --ruby
 
   # update rubygems, install bundler
   # sudo -E gem install --no-ri --no-rdoc rubygems-update >> $BUILD_LOG
@@ -90,6 +88,9 @@ if [[ -z `which git` ]]; then
     unknown_distro
   fi
 fi
+
+# install ruby via rvm
+\curl -L https://raw.github.com/chetan/rvm/noprompt/binscripts/rvm-installer | bash -s stable --ruby
 
 # setup base dir
 echo "creating /opt/bixby (via sudo)"

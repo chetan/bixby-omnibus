@@ -8,7 +8,7 @@ dependencies [ ]
 source :url => "ftp://sourceware.org/pub/libffi/libffi-#{version}.tar.gz",
        :md5 => md5
 
-relative_path "libpng-#{version}"
+relative_path "#{name}-#{version}"
 
 configure_env = {
   "LDFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",

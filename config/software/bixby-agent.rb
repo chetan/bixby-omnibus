@@ -15,7 +15,11 @@ env = {
 
 build do
 
+  # install all runtime deps into install_dir
   bundle "install --without development test", :env => env
+
+  # install all deps (including dev and test) into vendor for building gem
+  bundle "install --deployment --without ''", :env => env
   rake "build", :env => env
 
   cmd = cmd_str <<-EOF

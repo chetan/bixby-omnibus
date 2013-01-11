@@ -3,7 +3,7 @@ name "bixby-agent"
 version ENV["BIXBY_GIT_REV"] || "master"
 always_build true
 
-dependencies %w{ rubygems }
+dependencies %w{ rubygems curl }
 
 source :git => "https://github.com/chetan/bixby-agent.git"
 
@@ -20,7 +20,7 @@ env =
     {
       "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
       "LDFLAGS" => "-R#{install_dir}/embedded/lib -L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include -static-libgcc",
-      "LD_OPTIONS" => "-R#{install_dir}/embedded/lib"
+      "LD_OPTIONS" => "-R#{install_dir}/embedded/lib" # TODO remove this too?
     }
     else
       raise "Sorry, #{Omnibus.config.solaris_compiler} is not a valid compiler selection."
@@ -28,7 +28,7 @@ env =
   else
     {
       "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-      "LDFLAGS" => "-Wl,-rpath #{install_dir}/embedded/lib -L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
+      "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
     }
   end
 

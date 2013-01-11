@@ -8,29 +8,10 @@ dependencies %w{ rubygems curl }
 source :git => "https://github.com/chetan/bixby-agent.git"
 
 # setup ENV for compilation
-env =
-  case platform
-  when "solaris2"
-    if Omnibus.config.solaris_compiler == "studio"
-    {
-      "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-      "LDFLAGS" => "-R#{install_dir}/embedded/lib -L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
-    }
-    elsif Omnibus.config.solaris_compiler == "gcc"
-    {
-      "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-      "LDFLAGS" => "-R#{install_dir}/embedded/lib -L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include -static-libgcc",
-      "LD_OPTIONS" => "-R#{install_dir}/embedded/lib" # TODO remove this too?
-    }
-    else
-      raise "Sorry, #{Omnibus.config.solaris_compiler} is not a valid compiler selection."
-    end
-  else
-    {
-      "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-      "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
-    }
-  end
+env = {
+  "CFLAGS"  =>     "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
+  "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
+}
 
 build do
 

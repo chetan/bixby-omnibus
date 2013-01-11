@@ -14,9 +14,19 @@ Omnibus.setup do |o|
   o.config.install_dir = '/opt/bixby'
 
   #Omnibus::S3Tasks.define!
-  Omnibus::CleanTasks.define!
+  #Omnibus::CleanTasks.define!
 end
 
+# rake clean task
+require 'rake/clean'
+config = Omnibus.config
+::CLEAN.include("#{config.source_dir}/*",
+                "#{config.build_dir}/*")
+
+::CLOBBER.include("#{config.install_dir}/*",
+                  "#{config.cache_dir}/*")
+
+# setup omnibus
 overrides = Omnibus::Overrides.overrides
 
 Omnibus.projects("config/projects/*.rb")

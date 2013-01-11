@@ -34,7 +34,7 @@ env =
 
 build do
 
-  bundle "install", :env => env
+  bundle "install --without development test", :env => env
   rake "build", :env => env
 
   cmd = cmd_str <<-EOF

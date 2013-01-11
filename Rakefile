@@ -1,6 +1,7 @@
 
 require 'bundler/setup'
 require 'omnibus'
+require File.join(File.dirname(__FILE__), "lib/patch_omnibus_http")
 
 Omnibus.setup do |o|
   ##
@@ -17,7 +18,7 @@ overrides = Omnibus::Overrides.overrides
 Omnibus.projects("config/projects/*.rb")
 Omnibus.software(
   overrides,
-  "config/software/*.rb", 
-  File.join(Bundler.definition.specs["omnibus-software"][0].gem_dir, "config/software/*.rb") 
+  "config/software/*.rb",
+  File.join(Bundler.definition.specs["omnibus-software"][0].gem_dir, "config/software/*.rb")
 )
 

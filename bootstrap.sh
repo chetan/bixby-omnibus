@@ -58,19 +58,25 @@ if [[ -z `which gcc` ]]; then
     sudo apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
 
     # ruby
-    sudo apt-get -qqy install ruby rubygems libopenssl-ruby ruby-dev >> $BUILD_LOG
-    sudo -E gem install --no-ri --no-rdoc rubygems-update >> $BUILD_LOG
-    sudo ruby /var/lib/gems/1.8/gems/rubygems-update-*/setup.rb >> $BUILD_LOG
-    sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
+    # sudo apt-get -qqy install ruby rubygems libopenssl-ruby ruby-dev >> $BUILD_LOG
 
   elif is_centos; then
     install_rpmforge
     sudo -E yum -qy groupinstall "Development Tools" >> $BUILD_LOG
     sudo -E yum -qy install openssl-devel zlib-devel readline-devel curl-devel >> $BUILD_LOG
+    # sudo -E yum -qy install ruby ruby-devel rubygems >> $BUILD_LOG
 
   else
     unknown_distro
   fi
+
+  # install rvm
+  \curl -L https://raw.github.com/chetan/rvm/noprompt/binscripts/rvm-installer | bash -s stable --ruby
+
+  # update rubygems, install bundler
+  # sudo -E gem install --no-ri --no-rdoc rubygems-update >> $BUILD_LOG
+  # sudo ruby /var/lib/gems/1.8/gems/rubygems-update-*/setup.rb >> $BUILD_LOG
+  # sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
 fi
 
 # install git

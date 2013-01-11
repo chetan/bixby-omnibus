@@ -5,22 +5,13 @@ BUILD_LOG="/tmp/bixby-omnibus.log"
 # for wget/curl/yum proxy caching
 export http_proxy="http://192.168.80.98:8000"
 
+issue=`cat /etc/issue`
 function is_centos() {
-  issue=`cat /etc/issue`
-  if [[ $issue == CentOS* ]]; then
-    return 0
-  else
-    return 1
-  fi
+  [[ $issue =~ "^CentOS" ]]
 }
 
 function is_ubuntu() {
-  issue=`cat /etc/issue`
-  if [[ $issue == Ubuntu* ]]; then
-    return 0
-  else
-    return 1
-  fi
+  [[ $issue == Ubuntu* ]]
 }
 
 function unknown_distro() {
@@ -29,6 +20,29 @@ function unknown_distro() {
     echo "ERROR: only Ubuntu and CentOS are current supported!"
     echo
     exit 1
+}
+
+function is_64() {
+  [[ `uname -p` == "x86_64" ]]
+}
+
+function install_rpmforge() {
+  if [[ $issue =~ 'release 5' ]]; then
+    if is_64; then
+      wget -q http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm
+    else
+      wget -q http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.i386.rpm
+    fi
+  elif [[ $issue =~ 'release 6' ]]; then
+    if is_64; then
+      wget -q http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
+    else
+      wget -q http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+    fi
+  else
+    unknown_distro
+  fi
+  rpm -Uvh rpmforge*.rpm && rm -f rpmforge*.rpm
 }
 
 echo "BUILD START - `date`" > $BUILD_LOG
@@ -50,6 +64,7 @@ if [[ -z `which gcc` ]]; then
     sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
 
   elif is_centos; then
+    install_rpmforge
     sudo -E yum -qy groupinstall "Development Tools" >> $BUILD_LOG
     sudo -E yum -qy install openssl-devel zlib-devel readline-devel curl-devel >> $BUILD_LOG
 

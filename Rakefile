@@ -4,6 +4,7 @@ require 'omnibus'
 
 OMNIBUS_ROOT = File.expand_path(File.dirname(__FILE__))
 require File.join(OMNIBUS_ROOT, "lib/patch_omnibus_http")
+require File.join(OMNIBUS_ROOT, "lib/patch_omnibus_build_gem")
 require File.join(OMNIBUS_ROOT, "lib/gem_version")
 
 Omnibus.setup do |o|

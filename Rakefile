@@ -2,6 +2,7 @@
 require 'bundler/setup'
 require 'omnibus'
 require File.join(File.dirname(__FILE__), "lib/patch_omnibus_http")
+require File.join(File.dirname(__FILE__), "lib/gem_version")
 
 Omnibus.setup do |o|
   ##

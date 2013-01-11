@@ -13,4 +13,4 @@ else
 fi
 cd $ROOT
 
-rake project:bixby
+rake projects:bixby

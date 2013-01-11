@@ -1,8 +1,10 @@
 
 require 'bundler/setup'
 require 'omnibus'
-require File.join(File.dirname(__FILE__), "lib/patch_omnibus_http")
-require File.join(File.dirname(__FILE__), "lib/gem_version")
+
+OMNIBUS_ROOT = File.expand_path(File.dirname(__FILE__))
+require File.join(OMNIBUS_ROOT, "lib/patch_omnibus_http")
+require File.join(OMNIBUS_ROOT, "lib/gem_version")
 
 Omnibus.setup do |o|
   ##
@@ -22,4 +24,3 @@ Omnibus.software(
   "config/software/*.rb",
   File.join(Bundler.definition.specs["omnibus-software"][0].gem_dir, "config/software/*.rb")
 )
-

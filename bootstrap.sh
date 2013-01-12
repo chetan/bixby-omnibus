@@ -54,7 +54,7 @@ if is_centos; then
 fi
 
 # need build tools
-if [[ -z `which gcc` ]]; then
+if [[ -z `which gcc 2>/dev/null` ]]; then
   echo "installing build tools (via sudo)"
   if is_ubuntu; then
     echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > 30apt-proxy
@@ -72,7 +72,7 @@ if [[ -z `which gcc` ]]; then
 fi
 
 # install git
-if [[ -z `which git` ]]; then
+if [[ -z `which git 2>/dev/null` ]]; then
   echo "installing git (via sudo)"
   if is_ubuntu; then
     sudo apt-get -qqy install git-core >> $BUILD_LOG
@@ -84,7 +84,7 @@ if [[ -z `which git` ]]; then
 fi
 
 # install ruby
-if [[ -z `which ruby` ]]; then
+if [[ -z `which ruby 2>/dev/null` ]]; then
   git clone git://github.com/sstephenson/ruby-build.git
   cd ruby-build
   sudo ./install.sh

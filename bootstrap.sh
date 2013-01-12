@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# oneliner usage:
+# wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash
+#
+# (can be run as a normal user OR root)
+
 BUILD_LOG="/tmp/bixby-omnibus.log"
 
 # for wget/curl/yum proxy caching

@@ -58,6 +58,16 @@ if is_centos; then
   unalias cp rm mv 2>&1 >/dev/null
 fi
 
+# basics (sudo & wget)
+if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
+  yum -qy install sudo
+fi
+if [[ -z `which wget 2>/dev/null` ]]; then
+  echo "installing wget (via sudo)"
+  is_centos && sudo -E yum -qy install wget >> $BUILD_LOG
+  is_ubuntu && sudo -E apt-get -qqy install wget >> $BUILD_LOG
+fi
+
 # need build tools
 if [[ -z `which gcc 2>/dev/null` ]]; then
   echo "installing build tools (via sudo)"

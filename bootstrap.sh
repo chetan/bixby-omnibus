@@ -55,7 +55,7 @@ echo "##########################################" > $BUILD_LOG
 echo > $BUILD_LOG
 
 if is_centos; then
-  unalias cp rm mv
+  unalias cp rm mv 2>&1 >/dev/null
 fi
 
 # need build tools

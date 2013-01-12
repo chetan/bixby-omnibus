@@ -97,7 +97,6 @@ git clone git://github.com/sstephenson/ruby-build.git
 cd ruby-build
 sudo ./install.sh
 cd ..
-export CFLAGS='-g -O2 -fPIC'
 ruby-build 1.9.3-p362 /usr/local
 
 

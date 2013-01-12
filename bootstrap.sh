@@ -110,8 +110,12 @@ fi
 
 # install ruby
 if [[ -z `which ruby 2>/dev/null` ]]; then
-  git clone git://github.com/sstephenson/ruby-build.git
+  cd
+  if [[ ! -d ruby-build ]]; then
+    git clone git://github.com/sstephenson/ruby-build.git
+  fi
   cd ruby-build
+  git pull -q
   as_root ./install.sh
   cd ..
   as_root ruby-build 1.9.3-p362 /usr/local

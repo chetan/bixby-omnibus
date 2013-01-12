@@ -50,6 +50,16 @@ function install_rpmforge() {
   rpm -Uvh rpmforge*.rpm && rm -f rpmforge*.rpm
 }
 
+# only use sudo when necessary
+# i.e., centos will generally be root already
+function as_root() {
+  if [[ `whoami` == root ]]; then
+    $*
+  else
+    sudo -E $*
+  fi
+}
+
 echo "BUILD START - `date`" > $BUILD_LOG
 echo "##########################################" > $BUILD_LOG
 echo > $BUILD_LOG
@@ -64,8 +74,8 @@ if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
 fi
 if [[ -z `which wget 2>/dev/null` ]]; then
   echo "installing wget (via sudo)"
-  is_centos && sudo -E yum -q -y install wget >> $BUILD_LOG
-  is_ubuntu && sudo -E apt-get -qqy install wget >> $BUILD_LOG
+  is_centos && as_root yum -q -y install wget >> $BUILD_LOG
+  is_ubuntu && as_root apt-get -qqy install wget >> $BUILD_LOG
 fi
 
 # need build tools
@@ -73,13 +83,13 @@ if [[ -z `which gcc 2>/dev/null` ]]; then
   echo "installing build tools (via sudo)"
   if is_ubuntu; then
     echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > 30apt-proxy
-    sudo mv 30apt-proxy /etc/apt/apt.conf.d
-    sudo apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
+    as_root mv 30apt-proxy /etc/apt/apt.conf.d
+    as_root apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
 
   elif is_centos; then
     install_rpmforge
-    sudo -E yum -q -y groupinstall "Development Tools" >> $BUILD_LOG
-    sudo -E yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
+    as_root yum -q -y groupinstall "Development Tools" >> $BUILD_LOG
+    as_root yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
 
   else
     unknown_distro
@@ -90,9 +100,9 @@ fi
 if [[ -z `which git 2>/dev/null` ]]; then
   echo "installing git (via sudo)"
   if is_ubuntu; then
-    sudo apt-get -qqy install git-core >> $BUILD_LOG
+    as_root apt-get -qqy install git-core >> $BUILD_LOG
   elif is_centos; then
-    sudo yum -q -y install git >> $BUILD_LOG
+    as_root yum -q -y install git >> $BUILD_LOG
   else
     unknown_distro
   fi
@@ -102,19 +112,19 @@ fi
 if [[ -z `which ruby 2>/dev/null` ]]; then
   git clone git://github.com/sstephenson/ruby-build.git
   cd ruby-build
-  sudo ./install.sh
+  as_root ./install.sh
   cd ..
-  sudo -E ruby-build 1.9.3-p362 /usr/local
-  sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
+  as_root ruby-build 1.9.3-p362 /usr/local
+  as_root gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
 fi
 
 # setup base dir
 echo "creating /opt/bixby (via sudo)"
-sudo mkdir -p /var/cache/omnibus
-sudo chown $USER /var/cache/omnibus
-sudo rm -rf /opt/bixby
-sudo mkdir /opt/bixby
-sudo chown $USER /opt/bixby
+as_root mkdir -p /var/cache/omnibus
+as_root chown $USER /var/cache/omnibus
+as_root rm -rf /opt/bixby
+as_root mkdir /opt/bixby
+as_root chown $USER /opt/bixby
 
 # omnibus!
 cd

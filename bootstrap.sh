@@ -1,9 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash -e
 
 # oneliner usage:
 # wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash
 #
 # (can be run as a normal user OR root)
+
+set -e
 
 BUILD_LOG="/tmp/bixby-omnibus.log"
 

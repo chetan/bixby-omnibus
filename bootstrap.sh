@@ -12,17 +12,17 @@ export http_proxy="http://192.168.80.98:8000"
 
 issue=`cat /etc/issue`
 function is_centos() {
-  [[ $issue =~ "^CentOS" ]]
+  [[ $issue =~ ^CentOS ]]
 }
 
 function is_ubuntu() {
-  [[ $issue =~ "^Ubuntu" ]]
+  [[ $issue =~ ^Ubuntu ]]
 }
 
 function unknown_distro() {
     echo
     echo
-    echo "ERROR: only Ubuntu and CentOS are current supported!"
+    echo "ERROR: only Ubuntu and CentOS are currently supported!"
     echo
     exit 1
 }

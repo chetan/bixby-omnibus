@@ -86,7 +86,7 @@ if [[ -z `which gcc 2>/dev/null` ]]; then
 
   elif is_centos; then
     install_rpmforge
-    as_root yum -q -y groupinstall "Development Tools" >> $BUILD_LOG
+    as_root yum -q -y groupinstall "Development tools" >> $BUILD_LOG
     as_root yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
 
   else

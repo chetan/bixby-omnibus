@@ -90,7 +90,17 @@ if [[ -z `which git` ]]; then
 fi
 
 # install ruby via rvm
-\curl -L https://raw.github.com/chetan/rvm/noprompt/binscripts/rvm-installer | bash -s stable --ruby
+# \curl -L https://raw.github.com/chetan/rvm/noprompt/binscripts/rvm-installer | bash -s stable --ruby
+
+# install ruby
+git clone git://github.com/sstephenson/ruby-build.git
+cd ruby-build
+sudo ./install.sh
+cd ..
+export CFLAGS='-g -O2 -fPIC'
+ruby-build 1.9.3-p362 /usr/local
+
+
 
 # setup base dir
 echo "creating /opt/bixby (via sudo)"

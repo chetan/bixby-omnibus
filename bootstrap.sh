@@ -63,7 +63,8 @@ if [[ -z `which gcc` ]]; then
   elif is_centos; then
     install_rpmforge
     sudo -E yum -qy groupinstall "Development Tools" >> $BUILD_LOG
-    sudo -E yum -qy install openssl-devel zlib-devel readline-devel curl-devel >> $BUILD_LOG
+    sudo -E yum -qy install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
+    # curl-devel
     # sudo -E yum -qy install ruby ruby-devel rubygems >> $BUILD_LOG
     unalias cp rm mv
 

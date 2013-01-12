@@ -66,10 +66,6 @@ echo "BUILD START - `date`" > $BUILD_LOG
 echo "##########################################" > $BUILD_LOG
 echo > $BUILD_LOG
 
-if is_centos; then
-  unalias cp rm mv 2>&1 >/dev/null
-fi
-
 # basics (sudo & wget)
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
   yum -q -y install sudo >> $BUILD_LOG

@@ -1,7 +1,10 @@
 #!/bin/bash -e
 
 # oneliner usage:
-# wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash
+# \wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash
+#
+# or with curl:
+# \curl -Ls https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh | /bin/bash
 #
 # (can be run as a normal user OR root)
 

@@ -60,11 +60,11 @@ fi
 
 # basics (sudo & wget)
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
-  yum -qy install sudo
+  yum -q -y install sudo >> $BUILD_LOG
 fi
 if [[ -z `which wget 2>/dev/null` ]]; then
   echo "installing wget (via sudo)"
-  is_centos && sudo -E yum -qy install wget >> $BUILD_LOG
+  is_centos && sudo -E yum -q -y install wget >> $BUILD_LOG
   is_ubuntu && sudo -E apt-get -qqy install wget >> $BUILD_LOG
 fi
 
@@ -78,8 +78,8 @@ if [[ -z `which gcc 2>/dev/null` ]]; then
 
   elif is_centos; then
     install_rpmforge
-    sudo -E yum -qy groupinstall "Development Tools" >> $BUILD_LOG
-    sudo -E yum -qy install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
+    sudo -E yum -q -y groupinstall "Development Tools" >> $BUILD_LOG
+    sudo -E yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
 
   else
     unknown_distro
@@ -92,7 +92,7 @@ if [[ -z `which git 2>/dev/null` ]]; then
   if is_ubuntu; then
     sudo apt-get -qqy install git-core >> $BUILD_LOG
   elif is_centos; then
-    sudo yum -qy install git >> $BUILD_LOG
+    sudo yum -q -y install git >> $BUILD_LOG
   else
     unknown_distro
   fi

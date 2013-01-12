@@ -11,7 +11,7 @@ function is_centos() {
 }
 
 function is_ubuntu() {
-  [[ $issue == Ubuntu* ]]
+  [[ $issue =~ "^Ubuntu" ]]
 }
 
 function unknown_distro() {
@@ -49,6 +49,10 @@ echo "BUILD START - `date`" > $BUILD_LOG
 echo "##########################################" > $BUILD_LOG
 echo > $BUILD_LOG
 
+if is_centos; then
+  unalias cp rm mv
+fi
+
 # need build tools
 if [[ -z `which gcc` ]]; then
   echo "installing build tools (via sudo)"
@@ -57,25 +61,14 @@ if [[ -z `which gcc` ]]; then
     sudo mv 30apt-proxy /etc/apt/apt.conf.d
     sudo apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
 
-    # ruby
-    # sudo apt-get -qqy install ruby rubygems libopenssl-ruby ruby-dev >> $BUILD_LOG
-
   elif is_centos; then
     install_rpmforge
     sudo -E yum -qy groupinstall "Development Tools" >> $BUILD_LOG
     sudo -E yum -qy install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
-    # curl-devel
-    # sudo -E yum -qy install ruby ruby-devel rubygems >> $BUILD_LOG
-    unalias cp rm mv
 
   else
     unknown_distro
   fi
-
-  # update rubygems, install bundler
-  # sudo -E gem install --no-ri --no-rdoc rubygems-update >> $BUILD_LOG
-  # sudo ruby /var/lib/gems/1.8/gems/rubygems-update-*/setup.rb >> $BUILD_LOG
-  # sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
 fi
 
 # install git

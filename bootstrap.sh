@@ -97,7 +97,8 @@ git clone git://github.com/sstephenson/ruby-build.git
 cd ruby-build
 sudo ./install.sh
 cd ..
-ruby-build 1.9.3-p362 /usr/local
+sudo -E ruby-build 1.9.3-p362 /usr/local
+sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
 
 
 

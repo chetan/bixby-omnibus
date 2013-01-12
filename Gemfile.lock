@@ -24,7 +24,7 @@ GEM
       ohai (>= 0.6.12)
       rake (>= 0.9)
       uber-s3
-    omnibus-software (0.0.2)
+    omnibus-software (0.0.3)
     rake (10.0.3)
     systemu (2.5.2)
     uber-s3 (0.2.4)

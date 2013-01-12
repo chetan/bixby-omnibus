@@ -83,18 +83,15 @@ if [[ -z `which git` ]]; then
   fi
 fi
 
-# install ruby via rvm
-# \curl -L https://raw.github.com/chetan/rvm/noprompt/binscripts/rvm-installer | bash -s stable --ruby
-
 # install ruby
-git clone git://github.com/sstephenson/ruby-build.git
-cd ruby-build
-sudo ./install.sh
-cd ..
-sudo -E ruby-build 1.9.3-p362 /usr/local
-sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
-
-
+if [[ -z `which ruby` ]]; then
+  git clone git://github.com/sstephenson/ruby-build.git
+  cd ruby-build
+  sudo ./install.sh
+  cd ..
+  sudo -E ruby-build 1.9.3-p362 /usr/local
+  sudo -E gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
+fi
 
 # setup base dir
 echo "creating /opt/bixby (via sudo)"
@@ -106,9 +103,18 @@ sudo chown $USER /opt/bixby
 
 # omnibus!
 cd
-git clone https://github.com/chetan/bixby-omnibus.git
+if [[ ! -d bixby-omnibus ]]; then
+  git clone https://github.com/chetan/bixby-omnibus.git
+fi
 cd bixby-omnibus
+git reset --hard
+git pull -q
 bundle install >> $BUILD_LOG
+if [[ $? -ne 0 ]]; then
+  echo "bundle install failed for bixby-omnibus"
+  echo "details in $BUILD_LOG"
+  exit 1
+fi
 
 export GEM_SERVER="http://192.168.80.98:7000/"
 ./build.sh

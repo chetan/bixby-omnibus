@@ -8,12 +8,18 @@
 #
 # (can be run as a normal user OR root)
 
+
+# CONFIG
+export http_proxy="http://192.168.80.98:8000"
+export GEM_SERVER="http://192.168.80.98:7000/"
+
+
+
+# END CONFIG -------------------------------------------------------------------
+
 set -e
 
 BUILD_LOG="/tmp/bixby-omnibus.log"
-
-# for wget/curl/yum proxy caching
-export http_proxy="http://192.168.80.98:8000"
 
 issue=`cat /etc/issue`
 function is_centos() {
@@ -146,7 +152,6 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-export GEM_SERVER="http://192.168.80.98:7000/"
 ./build.sh
 
 # cleanup

@@ -14,7 +14,7 @@ else
 fi
 cd $ROOT
 
-rake projects:bixby
+rake clean projects:bixby
 
 # cleanup
 unset ROOT

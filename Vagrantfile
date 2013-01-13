@@ -33,7 +33,9 @@ Vagrant::Config.run do |config|
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
-  config.vm.share_folder "pkg", "~/pkg", File.expand_path("../pkg", __FILE__)
+  pkg_dir = File.join(File.expand_path(File.dirname(__FILE__)), "pkg")
+  Dir.mkdir(pkg_dir) if not File.exist? pkg_dir
+  config.vm.share_folder "pkg", "~/pkg", pkg_dir
 
   # TODO may want to fix this later
   # config.vm.share_folder "omnibus-chef", "~/omnibus-chef", File.expand_path("..", __FILE__)

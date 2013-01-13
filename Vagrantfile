@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 require "bundler/setup"
-require "omnibus/vagrant/omnibus"
+# require "omnibus/vagrant/omnibus"
 
 Vagrant::Config.run do |config|
 

@@ -17,7 +17,7 @@ export GEM_SERVER="http://192.168.80.98:7000/"
 
 # END CONFIG -------------------------------------------------------------------
 
-set -e
+# set -e
 
 BUILD_LOG="/tmp/bixby-omnibus.log"
 

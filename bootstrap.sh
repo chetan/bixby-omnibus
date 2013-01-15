@@ -68,11 +68,13 @@ function install_rpmforge() {
 
 # only use sudo when necessary
 # i.e., centos will generally be root already
+#
+# vagrant will always use the user 'vagrant'
 function as_root() {
   if [[ `whoami` == root ]]; then
     $*
   else
-    sudo -E $*
+    sudo -i $*
   fi
 }
 
@@ -81,6 +83,13 @@ echo "##########################################" > $BUILD_LOG
 echo > $BUILD_LOG
 
 # basics (sudo & wget)
+# fix sudo PATH first
+if [[ `whoami` != "root" ]]; then
+  if [[ ! `sudo env | egrep ^PATH | egrep '[:=]?/usr/local/bin'` ]]; then
+    sudo su -c 'echo export PATH="/usr/local/bin:$PATH" >> /root/.bashrc'
+  fi
+fi
+
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
   yum -q -y install sudo >> $BUILD_LOG
 fi

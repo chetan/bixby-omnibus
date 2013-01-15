@@ -20,12 +20,19 @@ class BixbyBuilder
   end
 end
 
+only_vms = ARGV
+
 # commands needed to do a build
 cmd = '\wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
 
 # loop through each env and build
 env = Vagrant::Environment.new
 env.vms.each do |name, vm|
+
+  if not only_vms.empty? and not only_vms.include? name then
+    puts "skipping #{name}"
+    next
+  end
 
   puts
   puts

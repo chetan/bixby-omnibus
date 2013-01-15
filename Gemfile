@@ -11,4 +11,5 @@ gem "omnibus-software"
 group :development do
   gem "vagrant", ">= 1.0"
   gem "ffi", "~> 1.3" # explicit definition to fix bundler bug
+  gem "pry"
 end

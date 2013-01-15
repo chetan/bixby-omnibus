@@ -21,24 +21,27 @@ class BixbyBuilder
 end
 
 # commands needed to do a build
-cmds = <<-EOF
-export PATH="$PATH:/usr/local/bin"
-cd ~vagrant/omnibus-chef
-gem install bundler --no-ri --no-rdoc
-bundle install
-rake projects:chef
-EOF
+cmd = '\wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
 
 # loop through each env and build
+threads = []
 env = Vagrant::Environment.new
 env.vms.each do |name, vm|
 
   puts name
 
-  (status, stdout, stderr) = BixbyBuilder.exec(vm, cmds.split(/\n/).join(";"))
-  puts status
-  puts stdout
-  puts stderr
+  t = Thread.new do
+    (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
+    puts status
+    puts stdout
+    puts stderr
+  end
+  t[:vm] = name
+  threads << t
 
   # break
 end
+
+puts "waiting for all threads to finish"
+ThreadsWait.all_waits(threads)
+puts "done!"

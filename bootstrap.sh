@@ -43,6 +43,12 @@ function is_64() {
 }
 
 function install_rpmforge() {
+  yum repolist | grep rpmforge > /dev/null
+  if [[ $? -eq 0 ]]; then
+    # already installed
+    return 0
+  fi
+
   if [[ $issue =~ 'release 5' ]]; then
     if is_64; then
       wget -q http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm
@@ -58,7 +64,7 @@ function install_rpmforge() {
   else
     unknown_distro
   fi
-  rpm -Uvh rpmforge*.rpm && rm -f rpmforge*.rpm
+  as_root rpm -Uvh rpmforge*.rpm && rm -f rpmforge*.rpm
 }
 
 # only use sudo when necessary

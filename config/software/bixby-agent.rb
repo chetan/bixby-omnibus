@@ -15,6 +15,23 @@ env = {
 
 build do
 
+  # swiped from 'chef' pkg in omnibus-software
+  block do
+    project = self.project
+    if project.name == "bixby"
+      git_cmd = "git describe --tags"
+      src_dir = self.project_dir
+      shell = Mixlib::ShellOut.new(git_cmd,
+                                   :cwd => src_dir)
+      shell.run_command
+      shell.error!
+      build_version = shell.stdout.chomp
+
+      project.build_version   build_version
+      project.build_iteration ENV["BIXBY_PACKAGE_ITERATION"].to_i || 1
+    end
+  end
+
   # install all runtime deps into install_dir
   bundle "install --without development test", :env => env
 

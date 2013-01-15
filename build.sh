@@ -16,5 +16,9 @@ cd $ROOT
 
 rake clean projects:bixby
 
+if [[ -d $HOME/pkg/ ]]; then
+  cp -fa pkg/* $HOME/pkg/
+fi
+
 # cleanup
 unset ROOT

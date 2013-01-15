@@ -2,14 +2,14 @@
 
 require 'bundler/setup'
 require 'vagrant'
-
+require 'chronic_duration'
 
 class BixbyBuilder
 
   def self.exec(vm, cmd)
     stdout = ""
     stderr = ""
-    status = vm.channel.sudo(cmd, {:error_check => false}) do |type, data|
+    status = vm.channel.execute(cmd, {:error_check => false}) do |type, data|
       if type == :stdout then
         stdout += data
       else

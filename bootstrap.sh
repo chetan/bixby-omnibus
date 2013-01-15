@@ -85,22 +85,20 @@ if [[ -z `which wget 2>/dev/null` ]]; then
   is_ubuntu && as_root apt-get -qqy install wget >> $BUILD_LOG
 fi
 
-# need build tools
-if [[ -z `which gcc 2>/dev/null` ]]; then
-  echo "installing build tools (via sudo)"
-  if is_ubuntu; then
-    echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > 30apt-proxy
-    as_root mv 30apt-proxy /etc/apt/apt.conf.d
-    as_root apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
+# need build tools & other deps
+echo "installing build tools (via sudo)"
+if is_ubuntu; then
+  echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > 30apt-proxy
+  as_root mv 30apt-proxy /etc/apt/apt.conf.d
+  as_root apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
 
-  elif is_centos; then
-    install_rpmforge
-    as_root yum -q -y groupinstall "Development tools" >> $BUILD_LOG
-    as_root yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
+elif is_centos; then
+  install_rpmforge
+  as_root yum -q -y groupinstall "Development tools" >> $BUILD_LOG
+  as_root yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
 
-  else
-    unknown_distro
-  fi
+else
+  unknown_distro
 fi
 
 # install git

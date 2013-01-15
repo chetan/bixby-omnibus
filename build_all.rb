@@ -24,24 +24,32 @@ end
 cmd = '\wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
 
 # loop through each env and build
-threads = []
 env = Vagrant::Environment.new
 env.vms.each do |name, vm|
 
-  puts name
+  puts
+  puts
+  puts "-----------------------------------------------------------------------"
+  puts "VM: #{name}"
+  puts "-----------------------------------------------------------------------"
+  puts
 
-  t = Thread.new do
-    (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
-    puts status
-    puts stdout
-    puts stderr
-  end
-  t[:vm] = name
-  threads << t
+  start = Time.new.to_i
+  (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
+  elapased = Time.new.to_i - start
+  puts "status: #{status}"
+  puts "elapsed: #{ChronicDuration.output(elapsed)}"
+  puts
+  puts "-----------------------------------------------------------------------"
+  puts "stdout:"
+  puts "-----------------------------------------------------------------------"
+  puts stdout
+  puts
+  puts "-----------------------------------------------------------------------"
+  puts "stderr:"
+  puts "-----------------------------------------------------------------------"
+  puts stderr
+  puts
 
   # break
 end
-
-puts "waiting for all threads to finish"
-ThreadsWait.all_waits(threads)
-puts "done!"

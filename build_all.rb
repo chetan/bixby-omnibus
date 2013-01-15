@@ -36,7 +36,7 @@ env.vms.each do |name, vm|
 
   start = Time.new.to_i
   (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
-  elapased = Time.new.to_i - start
+  elapsed = Time.new.to_i - start
   puts "status: #{status}"
   puts "elapsed: #{ChronicDuration.output(elapsed)}"
   puts

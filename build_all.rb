@@ -29,7 +29,7 @@ cmd = '\wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh 
 env = Vagrant::Environment.new
 env.vms.each do |name, vm|
 
-  if not only_vms.empty? and not only_vms.include? name then
+  if not only_vms.empty? and not only_vms.include? name.to_s then
     puts "skipping #{name}"
     next
   end

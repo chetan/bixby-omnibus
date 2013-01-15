@@ -154,10 +154,10 @@ fi
 # setup base dir
 echo "creating /opt/bixby (via sudo)"
 as_root mkdir -p /var/cache/omnibus
-as_root chown $USER /var/cache/omnibus
+as_root chown -R $USER /var/cache/omnibus
 as_root rm -rf /opt/bixby
 as_root mkdir /opt/bixby
-as_root chown $USER /opt/bixby
+as_root chown -R $USER /opt/bixby
 
 # omnibus!
 cd

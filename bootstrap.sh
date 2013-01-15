@@ -43,8 +43,7 @@ function is_64() {
 }
 
 function install_rpmforge() {
-  yum repolist | grep rpmforge > /dev/null
-  if [[ $? -eq 0 ]]; then
+  if [[ `yum repolist | grep rpmforge` ]]; then
     # already installed
     return 0
   fi
@@ -91,20 +90,39 @@ if [[ -z `which wget 2>/dev/null` ]]; then
   is_ubuntu && as_root apt-get -qqy install wget >> $BUILD_LOG
 fi
 
-# need build tools & other deps
-echo "installing build tools (via sudo)"
-if is_ubuntu; then
+# setup http proxy for apt
+if is_ubuntu && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
   echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > 30apt-proxy
   as_root mv 30apt-proxy /etc/apt/apt.conf.d
-  as_root apt-get -qqy install build-essential libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev >> $BUILD_LOG
+fi
+
+# add rpmforge to centos
+is_centos && install_rpmforge
+
+# update system
+is_ubuntu && as_root apt-get -qqy upgrade >> $BUILD_LOG
+is_centos && as_root yum -q -y upgrade >> $BUILD_LOG
+
+# need build tools
+if [[ -z `which gcc 2>/dev/null` ]]; then
+  echo "installing build tools (via sudo)"
+  if is_ubuntu; then
+    as_root apt-get -qqy install build-essential >> $BUILD_LOG
+
+  elif is_centos; then
+    as_root yum -q -y groupinstall "Development tools" >> $BUILD_LOG
+
+  else
+    unknown_distro
+  fi
+fi
+
+# install other deps
+if is_ubuntu; then
+  as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev  >> $BUILD_LOG
 
 elif is_centos; then
-  install_rpmforge
-  as_root yum -q -y groupinstall "Development tools" >> $BUILD_LOG
   as_root yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
-
-else
-  unknown_distro
 fi
 
 # install git
@@ -119,8 +137,8 @@ if [[ -z `which git 2>/dev/null` ]]; then
   fi
 fi
 
-# install ruby
-if [[ -z `which ruby 2>/dev/null` ]]; then
+# install ruby if correct version is not present
+if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3p362` ]]; then
   cd
   if [[ ! -d ruby-build ]]; then
     git clone git://github.com/sstephenson/ruby-build.git

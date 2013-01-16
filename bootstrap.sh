@@ -85,7 +85,7 @@ echo > $BUILD_LOG
 # basics (sudo & wget)
 # fix sudo PATH first
 if [[ ! `sudo env | egrep ^PATH | egrep '[:=]?/usr/local/bin'` ]]; then
-  sudo su -c 'echo export PATH="/usr/local/bin:$PATH" >> /root/.bashrc'
+  sudo su -c 'echo export PATH="/usr/local/bin:\$PATH" >> /root/.bashrc'
 fi
 
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then

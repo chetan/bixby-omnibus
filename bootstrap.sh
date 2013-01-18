@@ -99,8 +99,8 @@ fi
 
 # setup http proxy for apt
 if is_ubuntu && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
-  echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > 30apt-proxy
-  as_root mv 30apt-proxy /etc/apt/apt.conf.d
+  echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > /tmp/30apt-proxy
+  as_root mv /tmp/30apt-proxy /etc/apt/apt.conf.d
 fi
 
 # add rpmforge to centos

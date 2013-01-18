@@ -153,7 +153,6 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3p362` ]]; then
   cd ruby-build
   git pull -q
   as_root ./install.sh
-  hash -d ruby-build
   cd ..
   as_root ruby-build 1.9.3-p362 /usr/local
   as_root gem install --no-ri --no-rdoc bundler >> $BUILD_LOG

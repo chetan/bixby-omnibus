@@ -21,6 +21,7 @@ class BixbyBuilder
 end
 
 only_vms = ARGV
+halt = only_vms.delete("--halt")
 
 # commands needed to do a build
 cmd = '\wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
@@ -41,6 +42,9 @@ env.vms.each do |name, vm|
   puts "-----------------------------------------------------------------------"
   puts
 
+  # start vm if necessary
+  vm.up()
+
   start = Time.new.to_i
   (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
   elapsed = Time.new.to_i - start
@@ -57,6 +61,11 @@ env.vms.each do |name, vm|
   puts "-----------------------------------------------------------------------"
   puts stderr
   puts
+
+  # shutdown vm if we passed --halt
+  if halt then
+    vm.halt()
+  end
 
   # break
 end

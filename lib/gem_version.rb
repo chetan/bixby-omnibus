@@ -9,6 +9,8 @@ module Bixby
     specs.each{ |s| @bundles[s.name] = s.version.to_s }
     return @bundles
   end
+
+  # Determine the version number of a gem according to Gemfile.lock
   def self.gem_version(name)
     bundles[name]
   end

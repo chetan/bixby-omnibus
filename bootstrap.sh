@@ -74,7 +74,7 @@ function as_root() {
   if [[ `whoami` == root ]]; then
     $*
   else
-    sudo -i $*
+    sudo $*
   fi
 }
 

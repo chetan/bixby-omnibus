@@ -106,6 +106,11 @@ fi
 # add rpmforge to centos
 is_centos && install_rpmforge
 
+# pre-emptively fix grub
+# grub sometimes barfs when a new vm is created so fix it up
+# may have an error when grub is upgraded on e.g. ubuntu 12
+as_root grub-install /dev/sda > /dev/null
+
 # update system
 is_ubuntu && as_root apt-get -qqy upgrade >> $BUILD_LOG
 is_centos && as_root yum -q -y upgrade >> $BUILD_LOG

@@ -74,7 +74,7 @@ function as_root() {
   if [[ `whoami` == root ]]; then
     $*
   else
-    sudo $*
+    sudo env PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" $*
   fi
 }
 

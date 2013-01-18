@@ -3,7 +3,7 @@ name "bixby-agent"
 version ENV["BIXBY_GIT_REV"] || "master"
 always_build true
 
-dependencies %w{ rubygems bundler curl httpi systemu bixby-common }
+dependencies %w{ rubygems bundler curl systemu }
 
 source :git => "https://github.com/chetan/bixby-agent.git"
 

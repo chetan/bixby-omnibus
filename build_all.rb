@@ -22,9 +22,13 @@ end
 
 only_vms = ARGV
 halt = only_vms.delete("--halt")
+pids = []
 
 # commands needed to do a build
 cmd = '\wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
+
+logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
+Dir.mkdir(logdir) if not File.directory? logdir
 
 # loop through each env and build
 env = Vagrant::Environment.new
@@ -35,37 +39,47 @@ env.vms.each do |name, vm|
     next
   end
 
-  puts
-  puts
-  puts "-----------------------------------------------------------------------"
-  puts "VM: #{name}"
-  puts "-----------------------------------------------------------------------"
-  puts
+  if not vm.created?
+    puts "WARNING: vm '#{name}' is not created; won't build!"
+  end
 
-  # start vm if necessary
-  vm.up()
+  pids << fork do
 
-  start = Time.new.to_i
-  (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
-  elapsed = Time.new.to_i - start
-  puts "status: #{status}"
-  puts "elapsed: #{ChronicDuration.output(elapsed)}"
-  puts
-  puts "-----------------------------------------------------------------------"
-  puts "stdout:"
-  puts "-----------------------------------------------------------------------"
-  puts stdout
-  puts
-  puts "-----------------------------------------------------------------------"
-  puts "stderr:"
-  puts "-----------------------------------------------------------------------"
-  puts stderr
-  puts
+    STDOUT.reopen(File.open("#{logdir}/#{name}.log", "w+"))
 
-  # shutdown vm if we passed --halt
-  if halt then
-    vm.halt()
+    puts
+    puts
+    puts "-----------------------------------------------------------------------"
+    puts "VM: #{name}"
+    puts "-----------------------------------------------------------------------"
+    puts
+
+    vm.start()
+
+    start = Time.new.to_i
+    (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
+    elapsed = Time.new.to_i - start
+    puts "status: #{status}"
+    puts "elapsed: #{ChronicDuration.output(elapsed)}"
+    puts
+    puts "-----------------------------------------------------------------------"
+    puts "stdout:"
+    puts "-----------------------------------------------------------------------"
+    puts stdout
+    puts
+    puts "-----------------------------------------------------------------------"
+    puts "stderr:"
+    puts "-----------------------------------------------------------------------"
+    puts stderr
+    puts
+
+    # shutdown vm if we passed --halt
+    if halt then
+      vm.halt()
+    end
   end
 
   # break
 end
+
+pids.each{ |pid| Process.waitpid(pid) }

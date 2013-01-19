@@ -14,6 +14,7 @@ else
 fi
 cd $ROOT
 
+rm -rf pkg
 rake clean projects:bixby
 
 if [[ -d $HOME/pkg/ ]]; then

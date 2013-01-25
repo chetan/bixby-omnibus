@@ -25,7 +25,7 @@ halt = only_vms.delete("--halt")
 pids = []
 
 # commands needed to do a build
-cmd = '\wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
+cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
 
 logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
 Dir.mkdir(logdir) if not File.directory? logdir

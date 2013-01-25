@@ -1,6 +1,6 @@
 
 name "httpi"
-version "2.0.0"
+version Bixby.gem_version(name)
 
 dependencies %w{ rubygems }
 

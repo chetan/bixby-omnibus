@@ -14,7 +14,7 @@ else
 fi
 cd $ROOT
 
-rm -rf pkg
+rm -rf pkg /var/cache/omnibus/pkg
 rake clean projects:bixby
 
 if [[ -d $HOME/pkg/ ]]; then

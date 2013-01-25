@@ -34,7 +34,7 @@ GEM
       mixlib-shellout
       systemu
       yajl-ruby
-    omnibus (0.4.3)
+    omnibus (0.4.4)
       fpm (= 0.3.11)
       mixlib-shellout (~> 1.0)
       ohai (>= 0.6.12)

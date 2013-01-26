@@ -21,7 +21,8 @@ end
 require 'rake/clean'
 config = Omnibus.config
 ::CLEAN.include("#{config.source_dir}/*",
-                "#{config.build_dir}/*")
+                "#{config.build_dir}/*",
+                "#{config.package_dir}/*")
 
 ::CLOBBER.include("#{config.install_dir}/*",
                   "#{config.cache_dir}/*")

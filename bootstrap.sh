@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+# kickoff the build on a target distro
+
 # oneliner usage:
 # \wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash
 #

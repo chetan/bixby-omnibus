@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# run's the actual build and creates a package via fpm
+
 export ROOT=$(dirname $(readlink -f $0))
 cd $ROOT
 

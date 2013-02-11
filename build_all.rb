@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# run build on all vagrant boxes
+
 require 'bundler/setup'
 require 'vagrant'
 require 'chronic_duration'

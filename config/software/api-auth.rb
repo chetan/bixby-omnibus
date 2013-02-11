@@ -19,7 +19,7 @@ build do
 
   # install all deps (including dev and test) into vendor for building gem
   bundle "install --deployment --without ''", :env => env
-  rake "build", :env => env
+  bundle "exec rake build", :env => env
 
   cmd = cmd_str <<-EOF
     install pkg/*.gem

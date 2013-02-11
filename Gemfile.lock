@@ -40,7 +40,7 @@ GEM
       ohai (>= 0.6.12)
       rake (>= 0.9)
       uber-s3
-    omnibus-software (0.0.5)
+    omnibus-software (0.0.6)
     pry (0.9.11.4)
       coderay (~> 1.0.5)
       method_source (~> 0.8)

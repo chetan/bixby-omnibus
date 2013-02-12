@@ -4,7 +4,7 @@ version "LAST_TAG"
 
 dependencies %w{ rubygems bundler }
 
-source :git => "https://github.com/chetan/api_auth.git"
+source :git => "https://github.com/chetan/bixby-client.git"
 
 # setup ENV for compilation
 env = {

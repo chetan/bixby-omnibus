@@ -47,7 +47,7 @@ env.vms.each do |name, vm|
 
   pids << fork do
 
-    if only_vms.size > 1 then
+    if only_vms.empty? or only_vms.size > 1 then
       # redirect stdout if building more than one package
       STDOUT.reopen(File.open("#{logdir}/#{name}.log", "w+"))
     end

@@ -5,9 +5,9 @@ GEM
     archive-tar-minitar (0.5.2)
     childprocess (0.3.8)
       ffi (~> 1.0, >= 1.0.11)
-    chronic_duration (0.9.6)
+    chronic_duration (0.10.2)
       numerizer (~> 0.1.1)
-    coderay (1.0.8)
+    coderay (1.0.9)
     erubis (2.7.0)
     ffi (1.4.0)
     fpm (0.3.11)
@@ -35,7 +35,7 @@ GEM
       mixlib-shellout
       systemu
       yajl-ruby
-    omnibus (0.4.4)
+    omnibus (0.4.5)
       fpm (= 0.3.11)
       mixlib-shellout (~> 1.0)
       ohai (>= 0.6.12)

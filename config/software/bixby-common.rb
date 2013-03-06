@@ -4,7 +4,7 @@ version "LAST_TAG"
 
 always_build true
 
-dependencies %w{ rubygems bundler curl }
+dependencies %w{ rubygems bundler curl httpi }
 
 source :git => "https://github.com/chetan/bixby-common.git"
 

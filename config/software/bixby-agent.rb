@@ -24,15 +24,15 @@ build do
     end
   end
 
-  # install all runtime deps into install_dir
-  bundle "install --without development test", :env => env
+  %w{sinatra thin multi_json oj curb facter mixlib-cli mixlib-shellout
+     highline uuidtools logging }.each do |g|
+    gem "install #{g} -v #{Bixby.gem_version(g)}", :env => env
+  end
 
-  # install all deps (including dev and test) into vendor for building gem
-  bundle "install --deployment --without ''", :env => env
-  rake "build", :env => env
+  gem "build bixby-agent.gemspec"
 
   cmd = cmd_str <<-EOF
-    install pkg/bixby-agent-*.gem
+    install bixby-agent-*.gem
     -n #{install_dir}/bin
     --no-rdoc --no-ri
     EOF

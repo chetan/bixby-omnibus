@@ -16,15 +16,14 @@ env = {
 
 build do
 
-  # install all runtime deps into install_dir
-  bundle "install --without development test", :env => env
+  %w{multi_json logging}.each do |g|
+    gem "install #{g} -v #{Bixby.gem_version(g)}", :env => env
+  end
 
-  # install all deps (including dev and test) into vendor for building gem
-  bundle "install --deployment --without ''", :env => env
-  rake "build", :env => env
+  gem "build bixby-common.gemspec"
 
   cmd = cmd_str <<-EOF
-    install pkg/bixby-common-*.gem
+    install bixby-common-*.gem
     --no-rdoc --no-ri
     EOF
 

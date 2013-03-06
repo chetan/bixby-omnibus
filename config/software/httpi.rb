@@ -1,12 +1,26 @@
 
-# need a custom build so we can install it from
-# our private gem repo which has a custom build
-
 name "httpi"
-version Bixby.gem_version(name)
+version "chunked_responses"
 
-dependencies %w{ rubygems }
+dependencies %w{ rubygems bundler }
+
+source :git => "https://github.com/chetan/httpi.git"
+
+# setup ENV for compilation
+env = {
+  "CFLAGS"  =>     "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
+  "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
+}
 
 build do
-  build_gem(name, version, false)
+
+  gem "build httpi.gemspec"
+
+  cmd = cmd_str <<-EOF
+    install *.gem
+    --no-rdoc --no-ri
+    EOF
+
+  gem cmd, :env => env
+
 end

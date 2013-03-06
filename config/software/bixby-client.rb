@@ -2,7 +2,7 @@
 name "bixby-client"
 version "LAST_TAG"
 
-dependencies %w{ rubygems bundler }
+dependencies %w{ rubygems bundler bixby-common api-auth httpi }
 
 source :git => "https://github.com/chetan/bixby-client.git"
 
@@ -14,15 +14,14 @@ env = {
 
 build do
 
-  # install all runtime deps into install_dir
-  bundle "install --without development test", :env => env
+  %w{multi_json oj curb mixlib-shellout}.each do |g|
+    gem "install #{g} -v #{Bixby.gem_version(g)}", :env => env
+  end
 
-  # install all deps (including dev and test) into vendor for building gem
-  bundle "install --deployment --without ''", :env => env
-  rake "build", :env => env
+  gem "build bixby-client.gemspec"
 
   cmd = cmd_str <<-EOF
-    install pkg/*.gem
+    install *.gem
     --no-rdoc --no-ri
     EOF
 

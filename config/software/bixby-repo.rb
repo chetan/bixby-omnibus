@@ -11,7 +11,7 @@ build do
     %w{.git .test .gitignore Gemfile Gemfile.lock Rakefile README
        update_digests.sh}.each do |file|
 
-      system("rm -rf #{project_dir}/repo/#{file}")
+      system("rm -rf #{project_dir}")
     end
 
     system("mkdir #{install_dir}/repo")

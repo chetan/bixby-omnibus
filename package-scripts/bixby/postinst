@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# bixby post-install script
+
+function bootstrap_repo() {
+  if [ -f /opt/bixby/repo ]; then
+    return 0;
+  fi
+
+  cd /opt/bixby
+  mkdir repo
+  cd repo
+  git clone https://github.com/chetan/bixby-repo.git vendor
+  cd vendor
+
+  # remove unneeded files
+  rm -rf .git .test .gitignore Gemfile Gemfile.lock Rakefile README update_digests.sh
+  return 0
+}
+
+bootstrap_repo || exit 1

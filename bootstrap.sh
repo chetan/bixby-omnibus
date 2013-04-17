@@ -90,6 +90,10 @@ if [[ ! `sudo env | egrep ^PATH | egrep '[:=]?/usr/local/bin'` ]]; then
   sudo su -c 'echo export PATH="/usr/local/bin:\$PATH" >> /root/.bashrc'
 fi
 
+# make sure apt/yum are fresh
+is_ubuntu && as_root apt-get -qqy update > /dev/null
+is_centos && as_root yum -q -y check-update >> /dev/null
+
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
   yum -q -y install sudo >> $BUILD_LOG
 fi

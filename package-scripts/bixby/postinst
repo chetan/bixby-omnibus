@@ -14,7 +14,7 @@ function bootstrap_repo() {
   cd vendor
 
   # remove unneeded files
-  rm -rf .git .test .gitignore Gemfile Gemfile.lock Rakefile README update_digests.sh
+  rm -rf .git .test .gitignore Gemfile Gemfile.lock Rakefile README update_digests.sh convert_scout.rb
   return 0
 }
 

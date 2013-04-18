@@ -3,7 +3,7 @@
 # bixby post-install script
 
 function bootstrap_repo() {
-  if [ -f /opt/bixby/repo ]; then
+  if [ -d /opt/bixby/repo ]; then
     return 0;
   fi
 

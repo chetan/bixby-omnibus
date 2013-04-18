@@ -21,6 +21,7 @@ Vagrant::Config.run do |config|
 
     url = box.gsub(/\\-x86_64/, '')
 
+    # see: https://github.com/opscode/bento
     config.vm.define(box) do |c|
       c.vm.box     = box
       c.vm.box_url = "https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-#{url}.box"

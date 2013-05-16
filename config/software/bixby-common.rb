@@ -1,7 +1,6 @@
 
 name "bixby-common"
 version "LAST_TAG"
-
 always_build true
 
 dependencies %w{ rubygems bundler curl httpi }

@@ -1,6 +1,7 @@
 
 name "bixby-client"
 version "LAST_TAG"
+always_build true
 
 dependencies %w{ rubygems bundler bixby-common api-auth httpi }
 

@@ -16,7 +16,7 @@ env = {
 build do
 
   %w{multi_json oj curb mixlib-shellout}.each do |g|
-    gem "install #{g} -v #{Bixby.gem_version(g)}", :env => env
+    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => env
   end
 
   gem "build bixby-client.gemspec"

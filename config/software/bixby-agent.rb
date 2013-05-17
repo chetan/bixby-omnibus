@@ -26,7 +26,7 @@ build do
 
   %w{sinatra thin multi_json oj curb facter mixlib-cli mixlib-shellout
      highline uuidtools logging }.each do |g|
-    gem "install #{g} -v #{Bixby.gem_version(g)}", :env => env
+    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => env
   end
 
   gem "build bixby-agent.gemspec"

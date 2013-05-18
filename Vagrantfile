@@ -30,13 +30,16 @@ Vagrant.configure("2") do |config|
   # https://github.com/dotless-de/vagrant-vbguest
   config.vbguest.iso_path = "#{ENV['HOME']}/downloads/VBoxGuestAdditions_%{version}.iso"
 
-  # Share an additional folder to the guest VM. The first argument is
-  # an identifier, the second is the path on the guest to mount the
-  # folder, and the third is the path on the host to the actual folder.
-  # config.vm.share_folder "v-data", "/vagrant_data", "../data"
+  # Share an additional folder to the guest VM.
+  #
+  # The first parameter is a path to a directory on the host machine. If the
+  # path is relative, it is relative to the project root. The second parameter
+  # must be an absolute path of where to share the folder within the guest
+  # machine. This folder will be created (recursively, if it must) if it doesn't
+  # exist.
   pkg_dir = File.join(File.expand_path(File.dirname(__FILE__)), "pkg")
   Dir.mkdir(pkg_dir) if not File.exist? pkg_dir
-  config.vm.share_folder "pkg", "~/pkg", pkg_dir
+  config.vm.synced_folder pkg_dir, "~/pkg"
 
   # TODO may want to fix this later
   # config.vm.share_folder "omnibus-chef", "~/omnibus-chef", File.expand_path("..", __FILE__)

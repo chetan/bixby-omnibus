@@ -1,10 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-require "bundler/setup"
-# require "omnibus/vagrant/omnibus"
-
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
 
   boxes = %w{
     ubuntu-10.04-i386
@@ -51,13 +48,17 @@ Vagrant::Config.run do |config|
 
   # Give enough horsepower to build PC without taking all day
   # or several hours worth of swapping  Disable support we don't need
-  config.vm.customize [
-    "modifyvm", :id,
-    "--memory", "1536",
-    "--cpus", "2",
-    "--usb", "off",
-    "--usbehci", "off",
-    "--audio", "none"
-  ]
+  config.vm.provider :virtualbox do |vb|
+    vb.gui = false # Boot headless
+    vb.customize [
+      "modifyvm", :id,
+      "--memory", "1024",
+      "--cpus", "1",
+      "--usb", "off",
+      "--usbehci", "off",
+      "--audio", "none"
+    ]
+  end
+
 end
 

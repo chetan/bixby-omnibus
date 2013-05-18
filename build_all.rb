@@ -3,24 +3,54 @@
 # run build on all vagrant boxes
 
 require 'bundler/setup'
-require 'vagrant'
 require 'chronic_duration'
+require 'ostruct'
+require 'mixlib-shellout'
 
-class BixbyBuilder
-
-  def self.exec(vm, cmd)
-    stdout = ""
-    stderr = ""
-    status = vm.channel.execute(cmd, {:error_check => false}) do |type, data|
-      if type == :stdout then
-        stdout += data
-      else
-        stderr += data
-      end
+# Temp workaround to read the list of boxes from a Vagrantfile
+module Vagrant
+  class Provider
+    def gui=(val)
     end
-    return [status, stdout, stderr]
+    def customize(args)
+    end
+  end
+  class VM
+    class << self
+      attr_accessor :boxes
+    end
+    def initialize
+      self.class.boxes = []
+    end
+    def define(box)
+      self.class.boxes << box
+    end
+    def boxes
+      self.class.boxes
+    end
+    def provider(type, &block)
+      yield Provider.new
+    end
+    def share_folder(*args)
+    end
+  end
+  class Config
+    attr_reader :vm, :vbguest, :ssh
+    def initialize
+      @vm = VM.new
+      @vbguest = OpenStruct.new
+      @ssh = OpenStruct.new
+    end
+  end
+  def self.configure(ver, &block)
+    config = Config.new
+    yield config
+    config
   end
 end
+
+eval File.read("Vagrantfile")
+boxes = Vagrant::VM.boxes
 
 only_vms = ARGV
 halt = only_vms.delete("--halt")
@@ -28,22 +58,23 @@ pids = []
 
 # commands needed to do a build
 cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
+cmd = "vagrant ssh -c '#{cmd}'"
 
 logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
 Dir.mkdir(logdir) if not File.directory? logdir
 
 # loop through each env and build
-env = Vagrant::Environment.new
-env.vms.each do |name, vm|
+boxes.each do |name|
 
   if not only_vms.empty? and not only_vms.include? name.to_s then
     puts "skipping #{name}"
     next
   end
 
-  if not vm.created?
-    puts "WARNING: vm '#{name}' is not created; won't build!"
-  end
+  # TODO fix
+  # if not vm.created?
+  #   puts "WARNING: vm '#{name}' is not created; won't build!"
+  # end
 
   pids << fork do
 
@@ -59,29 +90,34 @@ env.vms.each do |name, vm|
     puts "-----------------------------------------------------------------------"
     puts
 
-    vm.start()
+    # TODO fix
+    # vm.start()
 
     start = Time.new.to_i
-    (status, stdout, stderr) = BixbyBuilder.exec(vm, cmd)
+
+    shell = Mixlib::ShellOut.new(*args)
+    shell.run_command
+
     elapsed = Time.new.to_i - start
-    puts "status: #{status}"
+    puts "status: #{shell.status}"
     puts "elapsed: #{ChronicDuration.output(elapsed)}"
     puts
     puts "-----------------------------------------------------------------------"
     puts "stdout:"
     puts "-----------------------------------------------------------------------"
-    puts stdout
+    puts shell.stdout
     puts
     puts "-----------------------------------------------------------------------"
     puts "stderr:"
     puts "-----------------------------------------------------------------------"
-    puts stderr
+    puts shell.stderr
     puts
 
+    # TODO fix
     # shutdown vm if we passed --halt
-    if halt then
-      vm.halt()
-    end
+    # if halt then
+    #   vm.halt()
+    # end
   end
 
   # break

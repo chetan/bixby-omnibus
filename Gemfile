@@ -7,10 +7,8 @@ source "http://192.168.80.98:7000/"
 gem "omnibus", "= 0.4.6"
 gem "omnibus-software"
 
-
 group :development do
-  gem "vagrant", ">= 1.0"
-  gem "vagrant-vbguest"
+  gem "mixlib-shellout"
   gem "ffi", "~> 1.3" # explicit definition to fix bundler bug
   gem "pry"
   gem "chronic_duration"

@@ -58,7 +58,6 @@ pids = []
 
 # commands needed to do a build
 cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
-cmd = "vagrant ssh -c '#{cmd}'"
 
 logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
 Dir.mkdir(logdir) if not File.directory? logdir
@@ -95,7 +94,8 @@ boxes.each do |name|
 
     start = Time.new.to_i
 
-    shell = Mixlib::ShellOut.new(*args)
+    c = "vagrant ssh #{name} -c '#{cmd}'"
+    shell = Mixlib::ShellOut.new(c)
     shell.run_command
 
     elapsed = Time.new.to_i - start

@@ -5,7 +5,7 @@
 require 'bundler/setup'
 require 'chronic_duration'
 require 'ostruct'
-require 'mixlib-shellout'
+require 'mixlib/shellout'
 
 # Temp workaround to read the list of boxes from a Vagrantfile
 module Vagrant
@@ -31,7 +31,7 @@ module Vagrant
     def provider(type, &block)
       yield Provider.new
     end
-    def share_folder(*args)
+    def synced_folder(*args)
     end
   end
   class Config

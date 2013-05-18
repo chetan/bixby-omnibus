@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
   # exist.
   pkg_dir = File.join(File.expand_path(File.dirname(__FILE__)), "pkg")
   Dir.mkdir(pkg_dir) if not File.exist? pkg_dir
-  config.vm.synced_folder pkg_dir, "~/pkg"
+  config.vm.synced_folder pkg_dir, "/mnt/pkg"
 
   # TODO may want to fix this later
   # config.vm.share_folder "omnibus-chef", "~/omnibus-chef", File.expand_path("..", __FILE__)

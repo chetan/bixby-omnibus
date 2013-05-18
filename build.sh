@@ -22,8 +22,8 @@ cd $ROOT
 rm -rf pkg /var/cache/omnibus/pkg
 rake clean projects:bixby
 
-if [[ -d $HOME/pkg/ ]]; then
-  cp -fa pkg/* $HOME/pkg/
+if [[ -d /mnt/pkg/ ]]; then
+  cp -fa pkg/* /mnt/pkg/
 fi
 
 # cleanup

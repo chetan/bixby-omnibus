@@ -78,8 +78,10 @@ boxes.each do |name|
   pids << fork do
 
     if only_vms.empty? or only_vms.size > 1 then
-      # redirect stdout if building more than one package
-      STDOUT.reopen(File.open("#{logdir}/#{name}.log", "w+"))
+      # redirect stdout/stderr if building more than one package
+      io = File.open("#{logdir}/#{name}.log", "w+")
+      STDOUT.reopen(io)
+      STDERR.reopen(io)
     end
 
     puts

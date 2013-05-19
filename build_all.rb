@@ -6,6 +6,10 @@ require 'bundler/setup'
 require 'chronic_duration'
 require 'ostruct'
 require 'mixlib/shellout'
+require 'vagrant-wrapper'
+
+# make sure we have vagrant installed (via system package)
+VagrantWrapper.require_or_help_install(">= 1.2")
 
 # Temp workaround to read the list of boxes from a Vagrantfile
 module Vagrant

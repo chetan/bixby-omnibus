@@ -61,6 +61,7 @@ GEM
     systemu (2.5.2)
     uber-s3 (0.2.4)
       mime-types (~> 1.17)
+    vagrant-wrapper (1.2.1)
     yajl-ruby (1.1.0)
 
 PLATFORMS
@@ -73,3 +74,4 @@ DEPENDENCIES
   omnibus (= 0.4.6)
   omnibus-software
   pry
+  vagrant-wrapper

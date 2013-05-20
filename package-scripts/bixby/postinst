@@ -9,6 +9,9 @@ function bootstrap_repo() {
     return 0;
   fi
 
+  # fix ownership - I think fpm should handle this but this is easier for now
+  chown -R root:root /opt/bixby
+
   cd /opt/bixby
   mkdir repo
   cd repo

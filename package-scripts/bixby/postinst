@@ -2,6 +2,8 @@
 
 # bixby post-install script
 
+url="https://s3.bixby.io"
+
 function bootstrap_repo() {
   if [ -d /opt/bixby/repo ]; then
     return 0;
@@ -10,11 +12,13 @@ function bootstrap_repo() {
   cd /opt/bixby
   mkdir repo
   cd repo
-  git clone https://github.com/chetan/bixby-repo.git vendor
-  cd vendor
+  ver=`\\curl -sL $url/latest-repo`
+  pkg="repo-$ver.tar.gz"
+  wget $url/$pkg
+  tar -xzf $pkg
+  mv bixby-repo vendor
+  rm -f $pkg
 
-  # remove unneeded files
-  rm -rf .git .test .gitignore Gemfile Gemfile.lock Rakefile README update_digests.sh convert_scout.rb
   return 0
 }
 

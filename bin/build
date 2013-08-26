@@ -31,7 +31,7 @@ pids = [] # list of forked processes
 only_vms = opts[:boxes] ? opts[:boxes].split(/,|\s/) : []
 
 # commands needed to do a build
-cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/bootstrap.sh -O - | /bin/bash'
+cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/shim.sh -O - | /bin/bash'
 if opts[:revision] then
   cmd = "BIXBY_GIT_REV=\"#{opts[:revision]}\" #{cmd}"
 end

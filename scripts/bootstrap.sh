@@ -21,8 +21,6 @@ export GEM_SERVER="http://192.168.80.98:7000/"
 
 # set -e
 
-BUILD_LOG="/tmp/bixby-omnibus.log"
-
 issue=`cat /etc/issue`
 function is_centos() {
   [[ $issue =~ ^CentOS ]]
@@ -80,9 +78,9 @@ function as_root() {
   fi
 }
 
-echo "BUILD START - `date`" > $BUILD_LOG
-echo "##########################################" > $BUILD_LOG
-echo > $BUILD_LOG
+echo "BUILD START - `date`"
+echo "##########################################"
+echo
 
 # basics (sudo & wget)
 # fix sudo PATH first
@@ -95,12 +93,12 @@ is_ubuntu && as_root apt-get -qqy update > /dev/null
 is_centos && as_root yum -q -y check-update >> /dev/null
 
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
-  yum -q -y install sudo >> $BUILD_LOG
+  yum -q -y install sudo
 fi
 if [[ -z `which wget 2>/dev/null` ]]; then
   echo "installing wget (via sudo)"
-  is_centos && as_root yum -q -y install wget >> $BUILD_LOG
-  is_ubuntu && as_root apt-get -qqy install wget >> $BUILD_LOG
+  is_centos && as_root yum -q -y install wget
+  is_ubuntu && as_root apt-get -qqy install wget
 fi
 
 # setup http proxy for apt
@@ -118,17 +116,17 @@ is_centos && install_rpmforge
 as_root grub-install /dev/sda > /dev/null
 
 # update system
-is_ubuntu && as_root apt-get -qqy upgrade >> $BUILD_LOG
-is_centos && as_root yum -q -y upgrade >> $BUILD_LOG
+is_ubuntu && as_root apt-get -qqy upgrade
+is_centos && as_root yum -q -y upgrade
 
 # need build tools
 if [[ -z `which gcc 2>/dev/null` ]]; then
   echo "installing build tools (via sudo)"
   if is_ubuntu; then
-    as_root apt-get -qqy install build-essential >> $BUILD_LOG
+    as_root apt-get -qqy install build-essential
 
   elif is_centos; then
-    as_root yum -q -y groupinstall "Development tools" >> $BUILD_LOG
+    as_root yum -q -y groupinstall "Development tools"
 
   else
     unknown_distro
@@ -137,19 +135,19 @@ fi
 
 # install other deps
 if is_ubuntu; then
-  as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev  >> $BUILD_LOG
+  as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev
 
 elif is_centos; then
-  as_root yum -q -y install openssl-devel zlib-devel readline-devel >> $BUILD_LOG
+  as_root yum -q -y install openssl-devel zlib-devel readline-devel
 fi
 
 # install git
 if [[ -z `which git 2>/dev/null` ]]; then
   echo "installing git (via sudo)"
   if is_ubuntu; then
-    as_root apt-get -qqy install git-core >> $BUILD_LOG
+    as_root apt-get -qqy install git-core
   elif is_centos; then
-    as_root yum -q -y install git >> $BUILD_LOG
+    as_root yum -q -y install git
   else
     unknown_distro
   fi
@@ -166,7 +164,7 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3p362` ]]; then
   as_root ./install.sh
   cd ..
   as_root ruby-build 1.9.3-p362 /usr/local
-  as_root gem install --no-ri --no-rdoc bundler >> $BUILD_LOG
+  as_root gem install --no-ri --no-rdoc bundler
 fi
 
 # setup base dir
@@ -187,10 +185,10 @@ else
   git reset --hard
   git pull -q
 fi
-bundle install >> $BUILD_LOG
+bundle install
 if [[ $? -ne 0 ]]; then
   echo "bundle install failed for bixby-omnibus"
-  echo "details in $BUILD_LOG"
+  echo "details in $HOME/bixby-omnibus.log"
   exit 1
 fi
 

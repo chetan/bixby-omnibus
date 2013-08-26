@@ -167,6 +167,13 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3p362` ]]; then
   as_root gem install --no-ri --no-rdoc bundler
 fi
 
+# upgrade bundler to at least 1.3.0
+ruby -rbundler -e 'exit 1 if Gem::Version.new(Bundler::VERSION) < Gem::Version.new("1.3.0")'
+if [[ $? -ne 0 ]]; then
+  as_root gem install --no-ri --no-rdoc bundler
+fi
+
+
 # setup base dir
 echo "creating /opt/bixby (via sudo)"
 as_root mkdir -p /var/cache/omnibus

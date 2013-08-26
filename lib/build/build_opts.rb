@@ -22,9 +22,14 @@ module Bixby
       :description => "List available boxes"
 
     option :revision,
-      :short       => "-r",
-      :long        => "--revision",
+      :short       => "-r REF",
+      :long        => "--revision REF",
       :description => "Agent version to build (tag or git ref; default: latest tag)"
+
+    option :clean,
+      :short       => "-c",
+      :long        => "--clean",
+      :description => "Clean build"
 
 
     def initialize

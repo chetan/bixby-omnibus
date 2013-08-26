@@ -3,7 +3,7 @@ module Bixby
   def self.bundles
     return @bundles if @bundles
 
-    path = File.join(OMNIBUS_ROOT, "tmp", "bixby-agent", "Gemfile.lock")
+    path = File.join(Omnibus::Config.project_root, "tmp", "bixby-agent", "Gemfile.lock")
     specs = Bundler::LockfileParser.new(Bundler.read_file(path)).specs
     @bundles = {}
     specs.each{ |s| @bundles[s.name] = s.version.to_s }

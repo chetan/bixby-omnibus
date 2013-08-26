@@ -8,60 +8,20 @@ require 'ostruct'
 require 'mixlib/shellout'
 require 'vagrant-wrapper'
 
+$: << File.expand_path("../../lib", __FILE__)
+require 'build/vagrant'
+
 # make sure we have vagrant installed (via system package)
 VagrantWrapper.require_or_help_install(">= 1.2")
 
-# Temp workaround to read the list of boxes from a Vagrantfile
-module Vagrant
-  class Provider
-    def gui=(val)
-    end
-    def customize(args)
-    end
-  end
-  class VM
-    class << self
-      attr_accessor :boxes
-    end
-    def initialize
-      self.class.boxes = []
-    end
-    def define(box)
-      self.class.boxes << box
-    end
-    def boxes
-      self.class.boxes
-    end
-    def provider(type, &block)
-      yield Provider.new
-    end
-    def synced_folder(*args)
-    end
-  end
-  class Config
-    attr_reader :vm, :vbguest, :ssh
-    def initialize
-      @vm = VM.new
-      @vbguest = OpenStruct.new
-      @ssh = OpenStruct.new
-    end
-  end
-  def self.configure(ver, &block)
-    config = Config.new
-    yield config
-    config
-  end
-end
-
-eval File.read("Vagrantfile")
-boxes = Vagrant::VM.boxes
+boxes = Vagrant.get_boxes()
 
 only_vms = ARGV
 halt = only_vms.delete("--halt")
 pids = []
 
 # commands needed to do a build
-cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash'
+cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/bootstrap.sh -O - | /bin/bash'
 
 logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
 Dir.mkdir(logdir) if not File.directory? logdir

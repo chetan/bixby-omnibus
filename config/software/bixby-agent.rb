@@ -24,8 +24,7 @@ build do
     end
   end
 
-  %w{sinatra thin multi_json oj curb facter mixlib-cli mixlib-shellout
-     highline uuidtools logging }.each do |g|
+  %w{facter mixlib-cli highline uuidtools god daemons}.each do |g|
     gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => env
   end
 

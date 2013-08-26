@@ -3,7 +3,7 @@ name "bixby-common"
 version "LAST_TAG"
 always_build true
 
-dependencies %w{ rubygems bundler curl httpi }
+dependencies %w{ rubygems bundler curl api-auth }
 
 source :git => "https://github.com/chetan/bixby-common.git"
 
@@ -15,7 +15,7 @@ env = {
 
 build do
 
-  %w{multi_json logging}.each do |g|
+  %w{multi_json httpi logging faye-websocket}.each do |g|
     gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri --verbose", :env => env
   end
 

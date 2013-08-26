@@ -3,7 +3,7 @@ name "bixby-client"
 version "LAST_TAG"
 always_build true
 
-dependencies %w{ rubygems bundler bixby-common api-auth httpi }
+dependencies %w{ rubygems bundler bixby-common api-auth }
 
 source :git => "https://github.com/chetan/bixby-client.git"
 
@@ -15,7 +15,7 @@ env = {
 
 build do
 
-  %w{multi_json oj curb mixlib-shellout}.each do |g|
+  %w{oj curb mixlib-shellout}.each do |g|
     gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => env
   end
 

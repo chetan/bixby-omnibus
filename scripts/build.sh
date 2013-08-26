@@ -5,7 +5,7 @@
 # this should be run inside a vm on the target platform.
 # normally called from bootstrap.sh
 
-export ROOT=$(dirname $(readlink -f $0))
+export ROOT=$(readlink -f $(dirname $0)/..)
 cd $ROOT
 
 # need bixby-agent checked out for installing it's gem deps

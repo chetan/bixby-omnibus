@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
-# kickoff the build on a target distro
+# kickoff the build on a target distro (e.g. within a VM)
 
 # oneliner usage:
-# \wget -q https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh -O - | /bin/bash
+# \wget -q https://raw.github.com/chetan/bixby-omnibus/master/scripts/bootstrap.sh -O - | /bin/bash
 #
 # or with curl:
-# \curl -Ls https://raw.github.com/chetan/bixby-omnibus/master/bootstrap.sh | /bin/bash
+# \curl -Ls https://raw.github.com/chetan/bixby-omnibus/master/scripts/bootstrap.sh | /bin/bash
 #
-# (can be run as a normal user OR root)
+# (can be run as a normal user with sudo OR root)
 
 
 # CONFIG
@@ -181,10 +181,12 @@ as_root chown -R $USER /opt/bixby
 cd
 if [[ ! -d bixby-omnibus ]]; then
   git clone https://github.com/chetan/bixby-omnibus.git
+  cd bixby-omnibus
+else
+  cd bixby-omnibus
+  git reset --hard
+  git pull -q
 fi
-cd bixby-omnibus
-git reset --hard
-git pull -q
 bundle install >> $BUILD_LOG
 if [[ $? -ne 0 ]]; then
   echo "bundle install failed for bixby-omnibus"
@@ -192,7 +194,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-./build.sh
+scripts/build.sh
 
 # cleanup
 unset http_proxy

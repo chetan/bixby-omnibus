@@ -1,6 +1,6 @@
 
 name "api-auth"
-version "non_rails"
+version "bixby"
 
 dependencies %w{ rubygems bundler }
 

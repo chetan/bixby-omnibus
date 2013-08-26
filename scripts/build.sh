@@ -20,7 +20,8 @@ fi
 cd $ROOT
 
 rm -rf pkg /var/cache/omnibus/pkg
-rake clean projects:bixby
+omnibus clean bixby
+omnibus build project bixby
 
 if [[ -d /mnt/pkg/ ]]; then
   cp -fa pkg/* /mnt/pkg/

@@ -170,6 +170,7 @@ fi
 # upgrade bundler to at least 1.3.0
 ruby -rbundler -e 'exit 1 if Gem::Version.new(Bundler::VERSION) < Gem::Version.new("1.3.0")'
 if [[ $? -ne 0 ]]; then
+  as_root gem uninstall -Ixa bundler
   as_root gem install --no-ri --no-rdoc bundler
 fi
 

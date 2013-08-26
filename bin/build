@@ -32,6 +32,9 @@ only_vms = opts[:boxes] ? opts[:boxes].split(/,|\s/) : []
 
 # commands needed to do a build
 cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/bootstrap.sh -O - | /bin/bash'
+if opts[:revision] then
+  cmd = "BIXBY_GIT_REV=\"#{opts[:revision]}\" #{cmd}"
+end
 
 logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
 Dir.mkdir(logdir) if not File.directory? logdir

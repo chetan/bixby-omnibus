@@ -21,6 +21,12 @@ module Bixby
       :long        => "--list",
       :description => "List available boxes"
 
+    option :revision,
+      :short       => "-r",
+      :long        => "--revision",
+      :description => "Agent version to build (tag or git ref; default: latest tag)"
+
+
     def initialize
       super
       @argv = parse_options()

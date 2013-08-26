@@ -20,8 +20,8 @@ fi
 cd $ROOT
 
 rm -rf pkg /var/cache/omnibus/pkg
-omnibus clean bixby
-omnibus build project bixby
+bundle exec omnibus clean bixby
+bundle exec omnibus build project bixby
 
 if [[ -d /mnt/pkg/ ]]; then
   cp -fa pkg/* /mnt/pkg/

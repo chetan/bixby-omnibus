@@ -1,11 +1,8 @@
 source "https://rubygems.org"
 source "http://192.168.80.98:7000/"
 
-# gem "omnibus", :git => "https://github.com/opscode/omnibus-ruby.git"
-# gem "omnibus-software", :git => "https://github.com/chetan/omnibus-software.git"
-
-gem "omnibus", "= 0.4.6"
-gem "omnibus-software"
+gem "omnibus", :git => "https://github.com/chetan/omnibus-ruby.git", :branch => "bixby"
+gem "omnibus-software", :git => "https://github.com/chetan/omnibus-software.git", :branch => "bixby"
 
 group :development do
   gem "vagrant-wrapper"

@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/omnibus-software.git
-  revision: d74c9d83e8f95232e350f7ce763f8497716ff2e1
+  revision: ecce915fa254655d20c81a89ee346d62c94a3d03
   branch: bixby
   specs:
     omnibus-software (0.0.9)
@@ -34,7 +34,7 @@ GEM
       numerizer (~> 0.1.1)
     clamp (0.6.1)
     coderay (1.0.9)
-    ffi (1.8.1)
+    ffi (1.9.0)
     fpm (0.4.42)
       arr-pm (~> 0.0.8)
       backports (>= 2.6.2)
@@ -51,12 +51,12 @@ GEM
     http_parser.rb (0.5.3)
     ipaddress (0.8.0)
     json (1.8.0)
-    method_source (0.8.1)
+    method_source (0.8.2)
     mime-types (1.24)
     mixlib-cli (1.3.0)
     mixlib-config (1.1.2)
     mixlib-log (1.6.0)
-    mixlib-shellout (1.1.0)
+    mixlib-shellout (1.2.0)
     numerizer (0.1.1)
     ohai (6.18.0)
       ipaddress
@@ -71,12 +71,12 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
     rake (10.1.0)
-    slop (3.4.5)
+    slop (3.4.6)
     systemu (2.5.2)
     thor (0.18.1)
     uber-s3 (0.2.4)
       mime-types (~> 1.17)
-    vagrant-wrapper (1.2.1)
+    vagrant-wrapper (1.2.1.1)
     yajl-ruby (1.1.0)
 
 PLATFORMS

@@ -10,15 +10,25 @@ require 'vagrant-wrapper'
 
 $: << File.expand_path("../../lib", __FILE__)
 require 'build/vagrant'
+require 'build/build_opts'
 
 # make sure we have vagrant installed (via system package)
 VagrantWrapper.require_or_help_install(">= 1.2")
 
+opts = Bixby::BuildOpts.new.config
 boxes = Vagrant.get_boxes()
 
-only_vms = ARGV
-halt = only_vms.delete("--halt")
-pids = []
+# --list
+if opts[:list] then
+  puts "Boxes:"
+  boxes.sort.each do |box|
+    puts " * #{box}"
+  end
+  exit
+end
+
+pids = [] # list of forked processes
+only_vms = opts[:boxes] ? opts[:boxes].split(/,|\s/) : []
 
 # commands needed to do a build
 cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/bootstrap.sh -O - | /bin/bash'

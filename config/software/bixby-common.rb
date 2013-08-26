@@ -7,16 +7,10 @@ dependencies %w{ rubygems bundler curl api-auth }
 
 source :git => "https://github.com/chetan/bixby-common.git"
 
-# setup ENV for compilation
-env = {
-  "CFLAGS"  =>     "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-  "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
-}
-
 build do
 
   %w{multi_json httpi logging faye-websocket}.each do |g|
-    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri --verbose", :env => env
+    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri --verbose", :env => Bixby.omnibus_env
   end
 
   gem "build bixby-common.gemspec"
@@ -26,6 +20,6 @@ build do
     --no-rdoc --no-ri
     EOF
 
-  gem cmd, :env => env
+  gem cmd, :env => Bixby.omnibus_env
 
 end

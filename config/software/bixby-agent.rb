@@ -8,12 +8,6 @@ dependencies %w{ rubygems bundler curl api-auth
 
 source :git => "https://github.com/chetan/bixby-agent.git"
 
-# setup ENV for compilation
-env = {
-  "CFLAGS"  =>     "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-  "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
-}
-
 build do
 
   # swiped from 'chef' pkg in omnibus-software
@@ -25,7 +19,7 @@ build do
   end
 
   %w{facter mixlib-cli highline uuidtools god daemons}.each do |g|
-    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => env
+    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => Bixby.omnibus_env
   end
 
   gem "build bixby-agent.gemspec"
@@ -36,7 +30,7 @@ build do
     --no-rdoc --no-ri
     EOF
 
-  gem cmd, :env => env
+  gem cmd, :env => Bixby.omnibus_env
 
   #
   # TODO: the "clean up" section below was cargo-culted from the

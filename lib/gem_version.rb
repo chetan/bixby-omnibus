@@ -2,6 +2,16 @@
 require 'bundler'
 
 module Bixby
+
+  def self.omnibus_env
+    {
+      "CFLAGS"  =>     "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
+      "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
+
+      "PATH"    => "#{install_dir}/embedded/bin:#{ENV["PATH"]}"
+    }
+  end
+
   def self.bundles
     return @bundles if @bundles
 

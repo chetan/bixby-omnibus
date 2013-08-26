@@ -7,16 +7,10 @@ dependencies %w{ rubygems bundler bixby-common api-auth }
 
 source :git => "https://github.com/chetan/bixby-client.git"
 
-# setup ENV for compilation
-env = {
-  "CFLAGS"  =>     "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-  "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
-}
-
 build do
 
   %w{oj curb mixlib-shellout}.each do |g|
-    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => env
+    gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => Bixby.omnibus_env
   end
 
   gem "build bixby-client.gemspec"
@@ -26,6 +20,6 @@ build do
     --no-rdoc --no-ri
     EOF
 
-  gem cmd, :env => env
+  gem cmd, :env => Bixby.omnibus_env
 
 end

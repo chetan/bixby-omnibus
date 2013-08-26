@@ -6,11 +6,7 @@ dependencies %w{ rubygems bundler }
 
 source :git => "https://github.com/chetan/api_auth.git"
 
-# setup ENV for compilation
-env = {
-  "CFLAGS"  =>     "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-  "LDFLAGS" => "-Wl,-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
-}
+env = Bixby.omnibus_env
 
 build do
 

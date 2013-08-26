@@ -1,4 +1,6 @@
 
+require 'bundler'
+
 module Bixby
   def self.bundles
     return @bundles if @bundles

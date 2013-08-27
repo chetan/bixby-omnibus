@@ -1,4 +1,6 @@
 
+# proxy patch may no longer be required in ruby 2.0 stdlib
+
 module Omnibus
   class NetFetcher < Fetcher
 

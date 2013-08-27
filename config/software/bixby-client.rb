@@ -3,7 +3,7 @@ name "bixby-client"
 version "LAST_TAG"
 always_build true
 
-dependencies %w{ rubygems bundler bixby-common api-auth }
+dependencies %w{ rubygems bundler curl bixby-common }
 
 source :git => "https://github.com/chetan/bixby-client.git"
 

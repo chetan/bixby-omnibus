@@ -3,7 +3,7 @@ name "bixby-common"
 version "LAST_TAG"
 always_build true
 
-dependencies %w{ rubygems bundler api-auth }
+dependencies %w{ rubygems bundler api-auth eventmachine }
 
 source :git => "https://github.com/chetan/bixby-common.git"
 

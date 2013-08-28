@@ -31,13 +31,14 @@ pids = [] # list of forked processes
 only_vms = opts[:boxes] ? opts[:boxes].split(/,|\s/) : []
 
 # commands needed to do a build
-cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/shim.sh -O - | /bin/bash'
+cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/shim.sh -O - |'
 if opts[:revision] then
-  cmd = "BIXBY_GIT_REV=\"#{opts[:revision]}\" #{cmd}"
+  cmd += %Q( BIXBY_GIT_REV="#{opts[:revision]}")
 end
 if opts[:clean] then
-  cmd = 'CLEAN=1 ' + cmd
+  cmd += ' CLEAN=1'
 end
+cmd += " /bin/bash"
 
 logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
 Dir.mkdir(logdir) if not File.directory? logdir

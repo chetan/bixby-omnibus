@@ -22,6 +22,8 @@ cd $ROOT
 rm -rf pkg /var/cache/omnibus/pkg
 
 if [ "$CLEAN" == "1" ]; then
+  # nuke src/build - faster than waiting for omnibus clean
+  rm -rf /var/cache/omnibus/src /var/cache/omnibus/build
   bundle exec omnibus clean bixby
 fi
 

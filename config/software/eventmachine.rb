@@ -14,7 +14,7 @@ build do
     opt_dir = File.join(em_dir, "opt")
 
     if File.directory? opt_dir then
-      files = `find #{em_dir}/lib/ -type f -name '*.so'`.split(/\n/)
+      files = `find #{em_dir} -type f -name '*.so'`.split(/\n/)
       files.each do |file|
         if File.dirname(file) != em_dir then
           system("mv #{file} #{em_dir}/")

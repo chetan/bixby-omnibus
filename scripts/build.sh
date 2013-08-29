@@ -21,9 +21,9 @@ cd $ROOT
 
 rm -rf pkg /var/cache/omnibus/pkg
 
-# if [ "$CLEAN" == "1" ]; then
+if [ "$CLEAN" == "1" ]; then
   bundle exec omnibus clean bixby
-# fi
+fi
 
 bundle exec omnibus build project bixby
 

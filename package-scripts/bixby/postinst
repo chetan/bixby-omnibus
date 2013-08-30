@@ -4,15 +4,17 @@
 
 url="https://s3.bixby.io"
 
+BIXBY_HOME=/opt/bixby
+
 function bootstrap_repo() {
   if [ -d /opt/bixby/repo ]; then
     return 0;
   fi
 
   # fix ownership - I think fpm should handle this but this is easier for now
-  chown -R root:root /opt/bixby
+  chown -R root:root $BIXBY_HOME
 
-  cd /opt/bixby
+  cd $BIXBY_HOME
   mkdir repo
   cd repo
   ver=`\\curl -sL $url/latest-repo`
@@ -26,15 +28,22 @@ function bootstrap_repo() {
 }
 
 function is_registered {
-  [[ -f /opt/bixby/etc/bixby.yml && -f /opt/bixby/etc/server.pub ]]
+  [[ -f $BIXBY_HOME/etc/bixby.yml && -f $BIXBY_HOME/etc/server.pub ]]
 }
 
 function upgrade_bixby() {
   if [[ ! -f /etc/init.d/bixby ]]; then
-    # install init script
-    cd /opt/bixby
-    mv etc/bixby-god.initd /etc/init.d/bixby
+    # install init script & god confs
+    cd $BIXBY_HOME
+    cd $(readlink -f $(dirname $(embedded/bin/gem which bixby-agent))/..)
+
+    cp -a etc/bixby-god.initd /etc/init.d/bixby
     chmod 755 /etc/init.d/bixby
+
+    mkdir -p $BIXBY_HOME/etc
+    cp -a etc/bixby.god etc/god.d $BIXBY_HOME/etc/
+    cd $BIXBY_HOME
+
     # if is_registered; then
     #   /opt/bixby/bin/bixby-agent stop
     # fi

@@ -25,4 +25,27 @@ function bootstrap_repo() {
   return 0
 }
 
+function is_registered {
+  [[ -f /opt/bixby/etc/bixby.yml && -f /opt/bixby/etc/server.pub ]]
+}
+
+function upgrade_bixby() {
+  if [ ! -f /etc/init.d/bixby ]; then
+    # install init script
+    cd /opt/bixby
+    mv etc/bixby-god.initd /etc/init.d/bixby
+    chmod 755 /etc/init.d/bixby
+    if is_registered; then
+      /opt/bixby/bin/bixby-agent stop
+    fi
+  fi
+
+  # restart service using bixby
+  if is_registered; then
+    /etc/init.d/bixby restart
+  fi
+}
+
 bootstrap_repo || exit 1
+
+upgrade_bixby

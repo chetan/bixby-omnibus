@@ -1,6 +1,6 @@
 
 name "bixby-client"
-version "LAST_TAG"
+version ENV["BIXBY_GIT_REV"] || "LAST_TAG"
 always_build true
 
 dependencies %w{ rubygems bundler curl bixby-common }

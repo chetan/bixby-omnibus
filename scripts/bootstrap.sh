@@ -13,7 +13,7 @@
 
 # CONFIG
 export http_proxy="http://192.168.80.98:8000"
-export GEM_SERVER="http://192.168.80.98:7000/"
+# export GEM_SERVER="http://192.168.80.98:7000/"
 
 
 

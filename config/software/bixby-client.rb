@@ -17,6 +17,7 @@ build do
 
   cmd = cmd_str <<-EOF
     install *.gem
+    -n #{install_dir}/bin
     --no-rdoc --no-ri
     EOF
 

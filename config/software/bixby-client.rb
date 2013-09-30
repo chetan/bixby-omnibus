@@ -17,10 +17,11 @@ build do
 
   cmd = cmd_str <<-EOF
     install *.gem
-    -n #{install_dir}/bin
     --no-rdoc --no-ri
     EOF
 
   gem cmd, :env => Bixby.omnibus_env
+
+  block { Bixby.ruby_wrapper("bixby", install_dir) }
 
 end

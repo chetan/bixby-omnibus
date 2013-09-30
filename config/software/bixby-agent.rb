@@ -25,11 +25,15 @@ build do
 
   cmd = cmd_str <<-EOF
     install bixby-agent-*.gem
-    -n #{install_dir}/bin
     --no-rdoc --no-ri
     EOF
 
   gem cmd, :env => Bixby.omnibus_env
+
+  # wrap ruby cocmmands
+  %w{bixby-agent bundle facter gem irb rake ruby}.each do |b|
+    block { Bixby.ruby_wrapper(b, install_dir) }
+  end
 
   #
   # TODO: the "clean up" section below was cargo-culted from the

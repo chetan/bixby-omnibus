@@ -8,20 +8,20 @@ Vagrant.configure("2") do |config|
     ubuntu-10.04-x86_64
     ubuntu-12.04-i386
     ubuntu-12.04-x86_64
-    centos-5.8-i386
-    centos-5.8-x86_64
-    centos-6.3-i386
-    centos-6.3-x86_64
+    centos-5.9-i386
+    centos-5.9-x86_64
+    centos-6.4-i386
+    centos-6.4-x86_64
   }
 
   boxes.each do |box|
 
-    url = box.gsub(/\\-x86_64/, '')
+    url = box.gsub(/\-x86_64/, '')
 
     # see: https://github.com/opscode/bento
     config.vm.define(box) do |c|
       c.vm.box     = box
-      c.vm.box_url = "https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-#{url}.box"
+      c.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_#{url}_provisionerless.box"
     end
 
   end

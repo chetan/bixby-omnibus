@@ -116,8 +116,15 @@ is_centos && install_rpmforge
 as_root grub-install /dev/sda > /dev/null
 
 # update system
-is_ubuntu && as_root apt-get -qqy upgrade
-is_centos && as_root yum -q -y upgrade
+if is_ubuntu; then
+  as_root apt-get -qqy upgrade
+  as_root apt-get -qqy autoremove
+  as_root apt-get -qqy autoclean
+
+elif is_centos; then
+  as_root yum -q -y upgrade
+fi
+
 
 # need build tools
 if [[ -z `which gcc 2>/dev/null` ]]; then

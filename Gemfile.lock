@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/chetan/omnibus-ruby.git
-  revision: 304d9b63b06e02f785d2ea7b34900ee131e8f965
+  revision: b495acaab48c8eb02e597173bc44f18b8a8c0711
   branch: bixby
   specs:
     omnibus (1.2.0)

@@ -1,0 +1,13 @@
+
+if ! getent passwd bixby >/dev/null; then
+  # Adding system group/user: bixby
+  groupadd -r bixby
+
+  useradd \
+  --system \
+  --gid bixby \
+  --home /opt/bixby \
+  --comment "Bixby User" \
+  --shell /bin/bash \
+  bixby >/dev/null
+fi

@@ -11,9 +11,6 @@ function bootstrap_repo() {
     return 0;
   fi
 
-  # fix ownership - I think fpm should handle this but this is easier for now
-  chown -R root:root $BIXBY_HOME
-
   cd $BIXBY_HOME
   mkdir repo
   cd repo
@@ -55,6 +52,13 @@ function upgrade_bixby() {
   # fi
 }
 
-bootstrap_repo || exit 1
+bootstrap_repo
+
+# fix ownership of bixby paths
+chown bixby:bixby $BIXBY_HOME
+chown bixby:bixby $BIXBY_HOME/*
+chown -R bixby:biby $BIXBY_HOME/bin
+chown -R bixby:biby $BIXBY_HOME/embedded
+chown -R bixby:biby $BIXBY_HOME/repo
 
 upgrade_bixby

@@ -57,8 +57,8 @@ bootstrap_repo
 # fix ownership of bixby paths
 chown bixby:bixby $BIXBY_HOME
 chown bixby:bixby $BIXBY_HOME/*
-chown -R bixby:biby $BIXBY_HOME/bin
-chown -R bixby:biby $BIXBY_HOME/embedded
-chown -R bixby:biby $BIXBY_HOME/repo
+chown -R bixby:bixby $BIXBY_HOME/bin
+chown -R bixby:bixby $BIXBY_HOME/embedded
+chown -R bixby:bixby $BIXBY_HOME/repo
 
 upgrade_bixby

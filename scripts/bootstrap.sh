@@ -20,6 +20,7 @@ export http_proxy="http://192.168.80.98:8000"
 # END CONFIG -------------------------------------------------------------------
 
 # set -e
+set -x
 
 issue=`cat /etc/issue`
 function is_centos() {

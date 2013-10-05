@@ -89,10 +89,6 @@ if [[ ! `sudo env | egrep ^PATH | egrep '[:=]?/usr/local/bin'` ]]; then
   sudo su -c 'echo export PATH="/usr/local/bin:\$PATH" >> /root/.bashrc'
 fi
 
-if is_ubuntu; then
-  export DEBIAN_FRONTEND=noninteractive
-fi
-
 # make sure apt/yum are fresh
 is_ubuntu && as_root apt-get -qqy update > /dev/null
 is_centos && as_root yum -q -y check-update >> /dev/null
@@ -122,7 +118,9 @@ as_root grub-install /dev/sda > /dev/null
 
 # update system
 if is_ubuntu; then
-  as_root apt-get -qqy upgrade
+  # had issues with simply using -y due to grub config popping up anyway
+  # http://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
+  as_root DEBIAN_FRONTEND=noninteractive apt-get -qqy -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
   as_root apt-get -qqy autoremove
   as_root apt-get -qqy autoclean
 

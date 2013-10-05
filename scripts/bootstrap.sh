@@ -12,7 +12,7 @@
 
 
 # CONFIG
-export http_proxy="http://192.168.80.98:8000"
+# export http_proxy="http://192.168.80.98:8000"
 # export GEM_SERVER="http://192.168.80.98:7000/"
 
 
@@ -102,8 +102,8 @@ if [[ -z `which wget 2>/dev/null` ]]; then
   is_ubuntu && as_root apt-get -qqy install wget
 fi
 
-# setup http proxy for apt
-if is_ubuntu && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
+# setup http proxy for apt - if proxy is set/avail
+if is_ubuntu && [[ ! -z "$http_proxy" ]] && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
   echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > /tmp/30apt-proxy
   as_root mv /tmp/30apt-proxy /etc/apt/apt.conf.d
 fi

@@ -53,12 +53,5 @@ function upgrade_bixby() {
 }
 
 bootstrap_repo
-
-# fix ownership of bixby paths
-chown bixby:bixby $BIXBY_HOME
-chown bixby:bixby $BIXBY_HOME/*
-chown -R bixby:bixby $BIXBY_HOME/bin
-chown -R bixby:bixby $BIXBY_HOME/embedded
-chown -R bixby:bixby $BIXBY_HOME/repo
-
+chown -R bixby:bixby $BIXBY_HOME
 upgrade_bixby

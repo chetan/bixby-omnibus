@@ -96,16 +96,18 @@ is_centos && as_root yum -q -y check-update >> /dev/null
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
   yum -q -y install sudo
 fi
+
+# Force APT to use our http_proxy
+# Note that Yum on CentOS will pickup and use http_proxy from the ENV
+if is_ubuntu && [[ ! -z "$http_proxy" ]] && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
+  echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > /tmp/30apt-proxy
+  as_root mv /tmp/30apt-proxy /etc/apt/apt.conf.d
+fi
+
 if [[ -z `which wget 2>/dev/null` ]]; then
   echo "installing wget (via sudo)"
   is_centos && as_root yum -q -y install wget
   is_ubuntu && as_root apt-get -qqy install wget
-fi
-
-# setup http proxy for apt - if proxy is set/avail
-if is_ubuntu && [[ ! -z "$http_proxy" ]] && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
-  echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > /tmp/30apt-proxy
-  as_root mv /tmp/30apt-proxy /etc/apt/apt.conf.d
 fi
 
 # add rpmforge to centos

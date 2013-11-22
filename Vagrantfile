@@ -8,8 +8,8 @@ Vagrant.configure("2") do |config|
     ubuntu-10.04-x86_64
     ubuntu-12.04-i386
     ubuntu-12.04-x86_64
-    centos-5.9-i386
-    centos-5.9-x86_64
+    centos-5.10-i386
+    centos-5.10-x86_64
     centos-6.4-i386
     centos-6.4-x86_64
   }

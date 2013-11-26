@@ -147,10 +147,13 @@ fi
 
 # install other deps
 if is_ubuntu; then
-  as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev
+  as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev libxslt1-dev libxml2-dev ntpdate
+  as_root ntpdate ntp.ubuntu.com
 
 elif is_centos; then
-  as_root yum -q -y install openssl-devel zlib-devel readline-devel
+  as_root yum -q -y install openssl-devel zlib-devel readline-devel libxslt-devel libxml2-devel ntp
+  as_root /sbin/ntpdate ntp.ubuntu.com
+
 fi
 
 # install git

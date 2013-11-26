@@ -8,5 +8,9 @@ fi
 
 DISTROS=$(bin/build --list | grep -v Box | awk '{print $2}' | grep ubuntu)
 for distro in $DISTROS; do
-  vagrant $CMD $distro
+  if [[ "$CMD" == "up" ]]; then
+    vagrant up $distro --provider aws
+  else
+    vagrant $CMD $distro
+  fi
 done

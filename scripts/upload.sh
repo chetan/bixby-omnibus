@@ -19,17 +19,23 @@ fi
 current=$(ls *.deb *.rpm 2>/dev/null | head -n 1 | perl -ne '/bixby.(.*?-1)/; print $1')
 ver=$(echo $current | perl -ne '/^(.*?)\+.*$/; print $1')
 
-for f in `ls bixby*.deb bixby*.rpm bixby*.metadata.json`; do
- nf=$(echo $f | sed -e "s/$ver[+0-9]*/$ver/")
- mv $f $nf
-done
+if [[ "$ver" != "" ]]; then
+  echo "* renaming packages"
+  for f in `ls bixby*.deb bixby*.rpm bixby*.metadata.json`; do
+    nf=$(echo $f | sed -e "s/$ver[+0-9]*/$ver/")
+    mv $f $nf
+  done
+fi
 
 
 # UPLOAD
 cd $HOME
 if [[ ! -d boto ]]; then
-  git clone https://github.com/boto/boto.git
+  git clone -q https://github.com/boto/boto.git
+  cd $HOME/boto/
+  git checkout -b 2.9.9 2.9.9
 fi
 
+echo "* uploading packages"
 cd $HOME/boto
 bin/s3put -p $PKGDIR -b s3.bixby.io -k agent/ $PKGDIR/*

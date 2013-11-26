@@ -6,14 +6,17 @@ Vagrant.configure("2") do |config|
   # ubuntu AMIs: https://cloud-images.ubuntu.com/locator/ec2/
 
   boxes = {
+    # Amazon EC2
     "ubuntu-10.04-i386"   => "ami-25a5804c",
     "ubuntu-10.04-x86_64" => "ami-2fa58046",
     "ubuntu-12.04-i386"   => "ami-c5a98cac",
     "ubuntu-12.04-x86_64" => "ami-d9a98cb0",
-    "centos-5.10-i386"    => "",
-    "centos-5.10-x86_64"  => "",
-    "centos-6.4-i386"     => "",
-    "centos-6.4-x86_64"   => "",
+
+    # Digital Ocean
+    "centos-5.10-i386"    => "CentOS 5.8 x32",
+    "centos-5.10-x86_64"  => "CentOS 5.8 x64",
+    "centos-6.4-i386"     => "CentOS 6.4 x32",
+    "centos-6.4-x86_64"   => "CentOS 6.4 x64",
   }
 
   boxes.each do |distro, ami|
@@ -31,10 +34,14 @@ Vagrant.configure("2") do |config|
       # AWS
       cfg.vm.provider :aws do |aws, override|
         override.ssh.username = (distro =~ /ubuntu/ ? "ubuntu" : "root")
-
         aws.ami  = ami
         aws.tags = { "Name" => "bixby-build-#{distro}" }
+      end
 
+
+      # Digital Ocean
+      cfg.vm.provider :digital_ocean do |ocean, overide|
+        ocean.image = ami
       end
     end
   end
@@ -50,7 +57,7 @@ Vagrant.configure("2") do |config|
   # shared folders
   pkg_dir = File.join(File.expand_path(File.dirname(__FILE__)), "pkg")
   Dir.mkdir(pkg_dir) if not File.exist? pkg_dir
-  config.vm.synced_folder pkg_dir, "/mnt/pkg", :disabled => false
+  config.vm.synced_folder pkg_dir, "/mnt/pkg", :disabled => true
   config.vm.synced_folder ".", "/vagrant", :disabled => true
 
   # Enable SSH agent forwarding for git clones
@@ -77,5 +84,12 @@ Vagrant.configure("2") do |config|
     override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
   end
 
+  config.vm.provider :digital_ocean do |ocean, override|
+    ocean.region = "New York 2"
+    ocean.size = "512MB"
+    ocean.setup = true
+
+    override.ssh.username = "bixby"
+  end
 end
 

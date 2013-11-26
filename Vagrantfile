@@ -87,7 +87,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :digital_ocean do |ocean, override|
     ocean.region = "New York 2"
-    ocean.size = "512MB"
+    ocean.size = "2GB"
     ocean.setup = true
 
     override.ssh.username = "bixby"

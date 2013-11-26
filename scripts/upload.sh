@@ -29,13 +29,10 @@ fi
 
 
 # UPLOAD
-cd $HOME
-if [[ ! -d boto ]]; then
-  git clone -q https://github.com/boto/boto.git
-  cd $HOME/boto/
-  git checkout -b 2.9.9 2.9.9
+if [[ -z `which s3cp 2>/dev/null` ]]; then
+  sudo gem install s3cp --no-ri --no-rdoc
 fi
 
 echo "* uploading packages"
-cd $HOME/boto
-bin/s3put -p $PKGDIR -b s3.bixby.io -k agent/ $PKGDIR/*
+cd $PKGDIR
+s3cp --max-attempts 3 * s3://s3.bixby.io/agent/

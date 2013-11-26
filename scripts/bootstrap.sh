@@ -23,15 +23,15 @@
 set -x
 
 issue=`cat /etc/issue`
-function is_centos() {
+is_centos() {
   [[ $issue =~ ^CentOS ]]
 }
 
-function is_ubuntu() {
+is_ubuntu() {
   [[ $issue =~ ^Ubuntu ]]
 }
 
-function unknown_distro() {
+unknown_distro() {
     echo
     echo
     echo "ERROR: only Ubuntu and CentOS are currently supported!"
@@ -39,11 +39,11 @@ function unknown_distro() {
     exit 1
 }
 
-function is_64() {
+is_64() {
   [[ `uname -p` == "x86_64" ]]
 }
 
-function install_rpmforge() {
+install_rpmforge() {
   if [[ `yum repolist | grep rpmforge` ]]; then
     # already installed
     return 0
@@ -71,7 +71,7 @@ function install_rpmforge() {
 # i.e., centos will generally be root already
 #
 # vagrant will always use the user 'vagrant'
-function as_root() {
+as_root() {
   if [[ `whoami` == root ]]; then
     $*
   else

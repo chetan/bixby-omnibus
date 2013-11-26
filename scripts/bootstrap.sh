@@ -217,3 +217,11 @@ scripts/build.sh
 # cleanup
 unset http_proxy
 unset GEM_SERVER
+
+echo "Packages:\n---------"
+cd
+ls -l bixby-omnibus/pkg/
+
+echo
+echo
+echo "##########################################\nBUILD FINISHED - `date`\n##########################################"

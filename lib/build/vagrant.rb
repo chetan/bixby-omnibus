@@ -9,6 +9,8 @@ module Vagrant
   end
 
   class Provider
+    def method_missing(meth, *args)
+    end
     def gui=(val)
     end
     def customize(args)
@@ -29,7 +31,7 @@ module Vagrant
       self.class.boxes
     end
     def provider(type, &block)
-      yield Provider.new
+      yield Provider.new, OpenStruct.new(:vm => OpenStruct.new)
     end
     def synced_folder(*args)
     end

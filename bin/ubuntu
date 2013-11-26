@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+CMD="$1"
+if [[ "$CMD" == "" ]]; then
+  echo "usage: $0 <up|halt|destroy>"
+  exit 1
+fi
+
+DISTROS=$(bin/build --list | grep -v Box | awk '{print $2}' | grep ubuntu)
+for distro in $DISTROS; do
+  vagrant $CMD $distro
+done

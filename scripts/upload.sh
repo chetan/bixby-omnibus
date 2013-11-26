@@ -35,4 +35,4 @@ fi
 
 echo "* uploading packages"
 cd $PKGDIR
-s3cp --max-attempts 3 * s3://s3.bixby.io/agent/
+s3cp --max-attempts 3 * s3://s3.bixby.io/agent/ && echo "* done"

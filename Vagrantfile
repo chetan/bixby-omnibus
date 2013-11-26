@@ -40,7 +40,8 @@ Vagrant.configure("2") do |config|
 
 
       # Digital Ocean
-      cfg.vm.provider :digital_ocean do |ocean, overide|
+      cfg.vm.provider :digital_ocean do |ocean, override|
+        override.vm.hostname = "bixby-build-" + distro.gsub(/x86_64/, 'x64')
         ocean.image = ami
       end
     end

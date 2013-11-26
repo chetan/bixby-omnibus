@@ -31,7 +31,7 @@ module Vagrant
       self.class.boxes
     end
     def provider(type, &block)
-      yield Provider.new, OpenStruct.new(:vm => OpenStruct.new)
+      yield Provider.new, Dummy.new
     end
     def synced_folder(*args)
     end
@@ -41,8 +41,8 @@ module Vagrant
     attr_reader :vm, :vbguest, :ssh
     def initialize
       @vm = VM.new
-      @vbguest = OpenStruct.new
-      @ssh = OpenStruct.new
+      @vbguest = Dummy.new
+      @ssh = Dummy.new
     end
   end
 
@@ -50,6 +50,12 @@ module Vagrant
     config = Config.new
     yield config
     config
+  end
+
+  class Dummy
+    def method_missing(m, *a)
+      Dummy.new
+    end
   end
 
 end

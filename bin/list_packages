@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+DISTROS=$(bin/build --list | grep -v Box | awk '{print $2}')
+
+for distro in $DISTROS; do
+  echo $distro:
+  vagrant ssh -c 'ls -l bixby-omnibus/pkg/' $distro 2>/dev/null
+  echo
+done

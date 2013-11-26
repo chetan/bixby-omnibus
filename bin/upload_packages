@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# check ENV
+fail=0
+if [[ "$AWS_ACCESS_KEY_ID" == "" ]]; then
+  echo AWS_ACCESS_KEY_ID is missing in your environment
+  fail=1
+fi
+if [[ "$AWS_SECRET_ACCESS_KEY" == "" ]]; then
+  echo AWS_SECRET_ACCESS_KEY is missing in your environment
+  exit 1
+fi
+[[ $fail -eq 1 ]] && exit 1
+
+
+DISTROS=$(bin/build --list | grep -v Box | awk '{print $2}')
+EXPORTS="export AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY'"
+UPLOAD="wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/upload.sh -O - | /bin/bash"
+
+for distro in $DISTROS; do
+  echo $distro:
+
+  if [[ "$(vagrant ssh $distro -c 'echo $AWS_ACCESS_KEY_ID')" == "" ]]; then
+    echo "* adding exports"
+    vagrant ssh $distro -- "echo $EXPORTS >> .bashrc"
+  fi
+
+  vagrant ssh $distro -- "$UPLOAD"
+  echo
+  exit
+done

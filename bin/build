@@ -28,7 +28,12 @@ if opts[:list] then
 end
 
 pids = [] # list of forked processes
+
+# filter list of vms
 only_vms = opts[:boxes] ? opts[:boxes].split(/,|\s/) : []
+if not only_vms.empty? then
+  boxes = boxes.find_all{ |b| only_vms.find{ |v| b.include?(v) || b =~ /#{v}/ } }
+end
 
 # commands needed to do a build
 cmd = '\wget -q --no-check-certificate https://raw.github.com/chetan/bixby-omnibus/master/scripts/shim.sh -O - |'
@@ -43,13 +48,9 @@ cmd += " /bin/bash"
 logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
 Dir.mkdir(logdir) if not File.directory? logdir
 
+
 # loop through each env and build
 boxes.each do |name|
-
-  if not only_vms.empty? and not only_vms.include? name.to_s then
-    puts "skipping #{name}"
-    next
-  end
 
   # TODO fix
   # if not vm.created?

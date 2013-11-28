@@ -16,7 +16,8 @@ function bootstrap_repo() {
   cd repo
   ver=`\\curl -sL $url/latest-repo`
   pkg="repo-$ver.tar.gz"
-  wget $url/repo/$pkg
+  echo "downloading $pkg"
+  wget -q $url/repo/$pkg
   tar -xzf $pkg
   mv bixby-repo vendor
   rm -f $pkg

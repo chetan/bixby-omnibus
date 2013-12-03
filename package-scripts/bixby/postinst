@@ -33,15 +33,18 @@ function upgrade_bixby() {
   if [[ ! -f /etc/init.d/bixby ]]; then
     # install init script & god confs
     cd $BIXBY_HOME
+    # change to bixby-agent gem dir so we can copy files to BIXBY_HOME
     cd $(readlink -f $(dirname $(embedded/bin/gem which bixby-agent))/..)
 
     cp -a etc/bixby-god.initd /etc/init.d/bixby
     chmod 755 /etc/init.d/bixby
 
     # install system service
-    [[ `which update-rc.d` ]] && update-rc.d bixby defaults
-    [[ `which chkconfig` ]] && chkconfig --add bixby && chkconfig bixby on
+    issue=`cat /etc/issue`
+    [[ $issue =~ ^Ubuntu ]] && [[ `which update-rc.d` ]]  && update-rc.d bixby defaults
+    [[ $issue =~ ^CentOS ]] && [[ `which chkconfig` ]]    && chkconfig --add bixby && chkconfig bixby on
 
+    # setup god configs
     mkdir -p $BIXBY_HOME/etc
     cp -a etc/bixby.god etc/god.d $BIXBY_HOME/etc/
     cd $BIXBY_HOME

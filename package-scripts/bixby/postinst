@@ -38,6 +38,10 @@ function upgrade_bixby() {
     cp -a etc/bixby-god.initd /etc/init.d/bixby
     chmod 755 /etc/init.d/bixby
 
+    # install system service
+    [[ `which update-rc.d` ]] && update-rc.d bixby defaults
+    [[ `which chkconfig` ]] && chkconfig --add bixby && chkconfig bixby on
+
     mkdir -p $BIXBY_HOME/etc
     cp -a etc/bixby.god etc/god.d $BIXBY_HOME/etc/
     cd $BIXBY_HOME

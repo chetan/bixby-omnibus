@@ -173,8 +173,9 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
   \curl -sSL https://get.rvm.io | sudo PATH="$PATH:/usr/sbin" bash -s stable
   sudo /usr/sbin/usermod -a -G rvm bixby
   newgrp rvm
+  source /etc/profile.d/rvm.sh
 
-  echo "rvm_remote_server_url3=https://s3.bixby.io/rubies" >> /usr/local/rvm/user/db
+  echo "rvm_remote_server_url3=https://s3.amazonaws.com/s3.bixby.io/rubies" | cat /usr/local/rvm/user/db - | sudo tee /usr/local/rvm/user/db >/dev/null
   /usr/local/rvm/bin/rvm install 1.9.3-p484 --binary
   source /usr/local/rvm/environments/ruby-1.9.3-p484
   rvm use 1.9.3-p484 --default

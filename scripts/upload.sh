@@ -30,7 +30,7 @@ fi
 
 # UPLOAD
 if [[ -z `which s3cp 2>/dev/null` ]]; then
-  sudo /usr/local/bin/gem install s3cp --no-ri --no-rdoc
+  gem install s3cp --no-ri --no-rdoc
 fi
 
 echo "* uploading packages"

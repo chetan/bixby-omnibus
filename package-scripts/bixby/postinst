@@ -49,15 +49,11 @@ function upgrade_bixby() {
     cp -a etc/bixby.god etc/god.d $BIXBY_HOME/etc/
     cd $BIXBY_HOME
 
-    # if is_registered; then
-    #   /opt/bixby/bin/bixby-agent stop
-    # fi
+    if is_registered; then
+      # start god when already registered. start's bixby-agent if not already running
+      /etc/init.d/bixby start
+    fi
   fi
-
-  # restart service using bixby
-  # if is_registered; then
-  #   /etc/init.d/bixby restart
-  # fi
 }
 
 bootstrap_repo

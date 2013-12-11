@@ -169,17 +169,12 @@ if [[ -z `which git 2>/dev/null` ]]; then
 fi
 
 # install ruby if correct version is not present
-if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3p362` ]]; then
+if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
   cd
-  if [[ ! -d ruby-build ]]; then
-    git clone git://github.com/sstephenson/ruby-build.git
-  fi
-  cd ruby-build
-  git pull -q
-  as_root ./install.sh
-  cd ..
-  as_root ruby-build 1.9.3-p362 /usr/local
-  as_root gem install --no-ri --no-rdoc bundler
+  \curl -sSL https://get.rvm.io | sudo PATH="$PATH:/usr/sbin" bash -s stable
+  sudo /usr/sbin/usermod -a -G rvm bixby
+  newgrp rvm
+  rvm install 1.9.3
 fi
 
 # upgrade bundler to at least 1.3.0

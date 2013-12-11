@@ -151,7 +151,7 @@ if is_ubuntu; then
 
 elif is_centos; then
   as_root yum -q -y install openssl-devel zlib-devel readline-devel libxslt-devel libxml2-devel ntp
-  as_root /sbin/ntpdate ntp.ubuntu.com
+  as_root /usr/sbin/ntpdate ntp.ubuntu.com
 
 fi
 

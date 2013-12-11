@@ -174,7 +174,7 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
   \curl -sSL https://get.rvm.io | sudo PATH="$PATH:/usr/sbin" bash -s stable
   sudo /usr/sbin/usermod -a -G rvm bixby
   newgrp rvm
-  rvm install 1.9.3
+  /usr/local/rvm/bin/rvm install 1.9.3
 fi
 
 # upgrade bundler to at least 1.3.0

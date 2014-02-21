@@ -18,11 +18,11 @@ Currently Ubuntu builds are done on Amazon EC2 while CentOS builds are done on D
 
 When logged in to the target platform, the following command will run the build:
 
-``bash
+```
 \wget -q --no-check-certificate \
   https://raw.github.com/chetan/bixby-omnibus/master/scripts/shim.sh \
   -O - | CLEAN=1 /bin/bash
-``
+```
 
 **Note:** It is advisable to run the build inside a screen to avoid issues due to disconnection.
 

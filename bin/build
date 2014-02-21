@@ -10,8 +10,8 @@ boxes = Vagrant.get_boxes()
 # --list
 if opts[:list] then
   puts "Boxes:"
-  boxes.sort.each do |box|
-    puts " * #{box}"
+  boxes.each_with_index do |box, i|
+    puts " #{i+1}: #{box}"
   end
   exit
 end

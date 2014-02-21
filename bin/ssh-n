@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+IDX="$1"
+if [[ "$IDX" == "" ]]; then
+  echo "connect to the specified box by number"
+  echo "usage: $0 <box number>"
+  echo
+  $(dirname $(readlink -f $0))/build --list
+  exit 1
+fi
+
+DISTRO=$(bin/build --list | grep -v Box | grep ${IDX}: | awk '{print $2}')
+if [ -z "$DISTRO" ]; then
+  echo "$DISTROY is an invalid box number!"
+  exit 1
+fi
+
+echo exec vagrant ssh $DISTRO ${@:2}
+exec vagrant ssh $DISTRO ${@:2}

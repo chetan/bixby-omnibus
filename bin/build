@@ -1,19 +1,8 @@
 #!/usr/bin/env ruby
 
-# run build on all vagrant boxes
-
-require 'bundler/setup'
-require 'chronic_duration'
-require 'ostruct'
-require 'mixlib/shellout'
-require 'vagrant-wrapper'
-
 $: << File.expand_path("../../lib", __FILE__)
 require 'build/vagrant'
 require 'build/build_opts'
-
-# make sure we have vagrant installed (via system package)
-VagrantWrapper.require_or_help_install(">= 1.2")
 
 opts = Bixby::BuildOpts.new.config
 boxes = Vagrant.get_boxes()
@@ -26,6 +15,15 @@ if opts[:list] then
   end
   exit
 end
+
+
+# make sure we have vagrant installed (via system package)
+require 'vagrant-wrapper'
+VagrantWrapper.require_or_help_install(">= 1.4")
+
+require 'chronic_duration'
+require 'mixlib/shellout'
+
 
 pids = [] # list of forked processes
 
@@ -45,7 +43,7 @@ if opts[:clean] then
 end
 cmd += " /bin/bash"
 
-logdir = File.expand_path(File.join(File.dirname(__FILE__), "log"))
+logdir = File.expand_path("../log", __dir__)
 Dir.mkdir(logdir) if not File.directory? logdir
 
 

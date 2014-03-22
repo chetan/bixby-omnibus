@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/chetan/omnibus-software-gpg.git
+  revision: aaf97d99eaedcadb867c90e0207a2093f7eb03fc
+  specs:
+    omnibus-software-gpg (0.1)
+
+GIT
   remote: https://github.com/chetan/omnibus-ruby.git
   revision: a2cb69cc01f2b1ec25f3239b6170d26e03a86097
   branch: bixby
@@ -70,9 +76,9 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
     rake (10.1.1)
-    slop (3.4.7)
+    slop (3.5.0)
     systemu (2.5.2)
-    thor (0.18.1)
+    thor (0.19.0)
     uber-s3 (0.2.4)
       mime-types (~> 1.17)
     vagrant-wrapper (1.2.1.1)
@@ -87,5 +93,6 @@ DEPENDENCIES
   mixlib-shellout
   omnibus!
   omnibus-software!
+  omnibus-software-gpg!
   pry
   vagrant-wrapper

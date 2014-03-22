@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem "omnibus", :git => "https://github.com/chetan/omnibus-ruby.git", :branch => "bixby"
 gem "omnibus-software", :git => "https://github.com/chetan/omnibus-software.git", :branch => "bixby"
+gem "omnibus-software-gpg", :github => "chetan/omnibus-software-gpg"
 
 group :development do
   gem "vagrant-wrapper"

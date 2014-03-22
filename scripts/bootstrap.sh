@@ -146,7 +146,7 @@ fi
 
 # install other deps
 if is_ubuntu; then
-  as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev libxslt1-dev libxml2-dev ntpdate
+  as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev libxslt1-dev libxml2-dev ntpdate curl
   as_root ntpdate ntp.ubuntu.com
 
 elif is_centos; then

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/chetan/omnibus-software-gpg.git
-  revision: aaf97d99eaedcadb867c90e0207a2093f7eb03fc
+  revision: 605af3ff987520564f7b0f86136ed29ff69e4e71
   specs:
     omnibus-software-gpg (0.1)
 

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/chetan/omnibus-software-gpg.git
-  revision: e41539ecb616d186e8c7a389141b26031e02b380
+  revision: 26ce4c6658f72f54f71dc88172d085f5917f7ed9
   specs:
     omnibus-software-gpg (0.1)
 
@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/omnibus-software.git
-  revision: 7d3da40e3a7cff41a3620046e2e8a05082400aa3
+  revision: 718800a4a03ed7f5802e3ec36f4b3180474728f7
   branch: bixby
   specs:
     omnibus-software (0.0.9)

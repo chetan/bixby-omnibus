@@ -8,4 +8,4 @@ install_path      "/opt/bixby"
 build_version     "placeholder" # will be set in bixby-agent package
 build_iteration   1
 
-dependencies      %w{ preparation ruby rubygems ruby-gpgme bundler bixby-agent version-manifest }
+dependencies      %w{ preparation ruby rubygems rbnacl bundler bixby-agent version-manifest }

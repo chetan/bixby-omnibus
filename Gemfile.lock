@@ -1,11 +1,5 @@
 GIT
-  remote: git://github.com/chetan/omnibus-software-gpg.git
-  revision: 26ce4c6658f72f54f71dc88172d085f5917f7ed9
-  specs:
-    omnibus-software-gpg (0.1)
-
-GIT
-  remote: https://github.com/chetan/omnibus-ruby.git
+  remote: git://github.com/chetan/omnibus-ruby.git
   revision: 4d26acc22740e42311d3ec247f4476326e0c24c5
   branch: bixby
   specs:
@@ -19,7 +13,13 @@ GIT
       uber-s3
 
 GIT
-  remote: https://github.com/chetan/omnibus-software.git
+  remote: git://github.com/chetan/omnibus-software-gpg.git
+  revision: 26ce4c6658f72f54f71dc88172d085f5917f7ed9
+  specs:
+    omnibus-software-gpg (0.1)
+
+GIT
+  remote: git://github.com/chetan/omnibus-software.git
   revision: 718800a4a03ed7f5802e3ec36f4b3180474728f7
   branch: bixby
   specs:
@@ -33,7 +33,7 @@ GEM
       cabin (> 0)
     backports (3.6.0)
     cabin (0.6.1)
-    childprocess (0.5.1)
+    childprocess (0.5.2)
       ffi (~> 1.0, >= 1.0.11)
     chronic_duration (0.10.4)
       numerizer (~> 0.1.1)
@@ -76,7 +76,7 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
-    rake (10.1.1)
+    rake (10.2.2)
     slop (3.5.0)
     systemu (2.5.2)
     thor (0.19.1)

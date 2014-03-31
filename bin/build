@@ -50,6 +50,8 @@ Dir.mkdir(logdir) if not File.directory? logdir
 # loop through each env and build
 boxes.each do |name|
 
+  next if name =~ /test/
+
   # TODO fix
   # if not vm.created?
   #   puts "WARNING: vm '#{name}' is not created; won't build!"

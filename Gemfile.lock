@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/omnibus-software.git
-  revision: 718800a4a03ed7f5802e3ec36f4b3180474728f7
+  revision: f2cbd4898905797bc5107a01e8a23dc6a3319d50
   branch: bixby
   specs:
     omnibus-software (0.0.9)

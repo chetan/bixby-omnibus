@@ -173,13 +173,18 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
   \curl -sSL https://get.rvm.io | sudo PATH="$PATH:/usr/sbin" bash -s stable
   sudo /usr/sbin/usermod -a -G rvm vagrant
   newgrp rvm
+
+  # load rvm
+  set +x
   source "/usr/local/rvm/scripts/rvm"
+  unset cd
+  set -x
 
   if is_centos; then
     # use our binaries for centos 5 or 6
     echo "rvm_remote_server_url3=https://s3.amazonaws.com/s3.bixby.io/rubies" | cat /usr/local/rvm/user/db - | sudo tee /usr/local/rvm/user/db >/dev/null
   fi
-  command rvm install 1.9.3-p484 --binary
+  command rvm install 1.9.3-p484
   rvm use 1.9.3-p484 --default
   # source /usr/local/rvm/environments/ruby-1.9.3-p484
 fi

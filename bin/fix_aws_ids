@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path("../../lib", __FILE__)
+require 'build/vagrant'
+require 'build/build_opts'
+require 'aws-sdk'
+require 'fileutils'
+
+opts = Bixby::BuildOpts.new.config
+boxes = Vagrant.get_boxes()
+
+
+instances = {}
+AWS.ec2.instances.each do |i|
+  next if i.status == :terminated
+  instances[i.tags["Name"]] = i.id
+end
+
+path = File.expand_path("../../.vagrant/machines", __FILE__)
+
+boxes.each do |box|
+  n = "bixby-build-#{box}"
+  if instances.include? n then
+    puts "found box #{box}: " + instances[n]
+    dir = File.join(path, box, "aws")
+    FileUtils.mkdir_p(dir)
+    File.write(File.join(dir, "id"), instances[n])
+  end
+end

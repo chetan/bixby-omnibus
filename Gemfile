@@ -13,4 +13,5 @@ group :development do
   gem "ffi", "~> 1.3" # explicit definition to fix bundler bug
   gem "pry"
   gem "chronic_duration"
+  gem "aws-sdk"
 end

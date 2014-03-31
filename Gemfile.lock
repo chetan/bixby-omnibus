@@ -92,6 +92,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.5.3)
   chronic_duration
   ffi (~> 1.3)
   mixlib-shellout

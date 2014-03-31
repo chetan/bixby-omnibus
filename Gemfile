@@ -1,10 +1,12 @@
 
 source "https://rubygems.org"
+
 gem "omnibus",              :github => "chetan/omnibus-ruby",     :branch => "bixby"
 gem "omnibus-software",     :github => "chetan/omnibus-software", :branch => "bixby"
 gem "omnibus-software-gpg", :github => "chetan/omnibus-software-gpg"
 
 group :development do
+  gem "bundler", "~> 1.5.3"
   gem "unf"
   gem "vagrant-wrapper"
   gem "mixlib-shellout"

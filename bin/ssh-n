@@ -6,7 +6,9 @@ if [[ "$IDX" == "" ]]; then
   echo "usage: $0 <box number>"
   echo
   $(dirname $(readlink -f $0))/build --list
-  exit 1
+  echo
+  echo -n "choose a box number: "
+  read IDX
 fi
 
 DISTRO=$(bin/build --list | grep -v Box | egrep "^ ${IDX}:" | awk '{print $2}')

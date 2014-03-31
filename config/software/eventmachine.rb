@@ -1,6 +1,6 @@
 
 name "eventmachine"
-version Bixby.gem_version(name)
+default_version Bixby.gem_version(name)
 
 dependencies %w{ rubygems }
 

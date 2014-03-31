@@ -1,6 +1,6 @@
 
 name "bixby-repo"
-version "master"
+default_version "master"
 
 source :git => "https://github.com/chetan/bixby-repo.git"
 

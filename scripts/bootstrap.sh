@@ -168,6 +168,7 @@ if [[ -z `which git 2>/dev/null` ]]; then
 fi
 
 # install ruby if correct version is not present
+rvm use 1.9.3-p484 --default
 if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
   cd
   \curl -sSL https://get.rvm.io | sudo PATH="$PATH:/usr/sbin" bash -s stable
@@ -178,7 +179,6 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
   set +x
   source "/usr/local/rvm/scripts/rvm"
   unset cd
-  set -x
 
   if is_centos; then
     # use our binaries for centos 5 or 6
@@ -186,6 +186,7 @@ if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
   fi
   rvmsudo rvm install 1.9.3-p484
   rvm use 1.9.3-p484 --default
+  set -x
   # source /usr/local/rvm/environments/ruby-1.9.3-p484
 fi
 

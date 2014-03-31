@@ -50,7 +50,7 @@ function upgrade_bixby() {
     cd $BIXBY_HOME
 
     if is_registered; then
-      # start god when already registered. start's bixby-agent if not already running
+      # start god when already registered. starts bixby-agent if not already running
       /etc/init.d/bixby start
     fi
   fi

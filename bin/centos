@@ -18,7 +18,9 @@ for distro in $DISTROS; do
     echo "$distro: ${@:2}"
     vagrant ssh $distro -- "${@:2}"
     echo
-  else
+  elif [[ "$CMD" == "halt" ]]; then
     vagrant halt $distro
+  else
+    echo "error: command must be one of: up, halt, destroy, or ssh"
   fi
 done

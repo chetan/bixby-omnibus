@@ -35,6 +35,8 @@ module Vagrant
     end
     def synced_folder(*args)
     end
+    def method_missing(m, *a)
+    end
   end
 
   class Config

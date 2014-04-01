@@ -31,6 +31,8 @@ pids = [] # list of forked processes
 only_vms = opts[:boxes] ? opts[:boxes].split(/,|\s/) : []
 if not only_vms.empty? then
   boxes = boxes.find_all{ |b| only_vms.find{ |v| b.include?(v) || b =~ /#{v}/ } }
+else
+  boxes.reject!{ |b| b =~ /test/ }
 end
 
 # commands needed to do a build
@@ -49,8 +51,6 @@ Dir.mkdir(logdir) if not File.directory? logdir
 
 # loop through each env and build
 boxes.each do |name|
-
-  next if name =~ /test/
 
   # TODO fix
   # if not vm.created?

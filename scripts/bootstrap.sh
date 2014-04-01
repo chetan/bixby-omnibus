@@ -79,9 +79,6 @@ as_root() {
   fi
 }
 
-echo -e "############################################\nBUILD STARTED - `date`\n############################################"
-echo
-
 # basics (sudo & wget)
 # fix sudo PATH first
 if [[ ! `sudo env | egrep ^PATH | egrep '[:=]?/usr/local/bin'` ]]; then
@@ -167,38 +164,18 @@ if [[ -z `which git 2>/dev/null` ]]; then
   fi
 fi
 
-# install ruby if correct version is not present
-rvm use 1.9.3-p484 --default
-if [[ -z `which ruby 2>/dev/null` || ! `ruby -v | grep 1.9.3` ]]; then
-  cd
-  \curl -sSL https://get.rvm.io | sudo PATH="$PATH:/usr/sbin" bash -s stable
-  sudo /usr/sbin/usermod -a -G rvm $USER
-  newgrp rvm
 
-  # load rvm
-  set +x
-  source "/usr/local/rvm/scripts/rvm"
-  unset cd
+# install ruby
+wget -O ruby-install-0.4.1.tar.gz https://github.com/postmodern/ruby-install/archive/v0.4.1.tar.gz
+tar -xzf ruby-install-0.4.1.tar.gz
+cd ruby-install-0.4.1/
+sudo make install
+cd ..
+sudo rm -rf ruby-install-*
+sudo ruby-install -i /usr/local ruby 1.9.3-p545
+sudo gem install --no-ri --no-rdoc bundler -v 1.5.3
 
-  if is_centos; then
-    # use our binaries for centos 5 or 6
-    echo "rvm_remote_server_url3=https://s3.amazonaws.com/s3.bixby.io/rubies" | cat /usr/local/rvm/user/db - | sudo tee /usr/local/rvm/user/db >/dev/null
-  fi
-  rvmsudo rvm install 1.9.3-p484
-  rvm use 1.9.3-p484 --default
-  set -x
-  # source /usr/local/rvm/environments/ruby-1.9.3-p484
-fi
-
-# upgrade bundler to at least 1.3.0
-ruby -rbundler -e 'exit 1 if Gem::Version.new(Bundler::VERSION) < Gem::Version.new("1.3.0")'
-if [[ $? -ne 0 ]]; then
-  as_root gem uninstall -Ixa bundler
-  as_root gem install --no-ri --no-rdoc bundler
-fi
-
-
-# setup base dir
+# setup base dirs
 echo "creating /opt/bixby (via sudo)"
 as_root mkdir -p /var/cache/omnibus
 as_root chown -R $USER /var/cache/omnibus
@@ -206,33 +183,8 @@ as_root rm -rf /opt/bixby
 as_root mkdir /opt/bixby
 as_root chown -R $USER /opt/bixby
 
-# omnibus!
+# checkout omnibus
 cd
-if [[ ! -d bixby-omnibus ]]; then
-  git clone https://github.com/chetan/bixby-omnibus.git
-  cd bixby-omnibus
-else
-  cd bixby-omnibus
-  git reset --hard
-  git pull -q
-fi
+git clone https://github.com/chetan/bixby-omnibus.git
+cd bixby-omnibus
 bundle install
-if [[ $? -ne 0 ]]; then
-  echo "bundle install failed for bixby-omnibus"
-  echo "details in $HOME/bixby-omnibus.log"
-  exit 1
-fi
-
-scripts/build.sh
-
-# cleanup
-unset http_proxy
-unset GEM_SERVER
-
-echo "Packages:\n---------"
-cd
-ls -l bixby-omnibus/pkg/
-
-echo
-echo
-echo -e "#############################################\nBUILD FINISHED - `date`\n#############################################"

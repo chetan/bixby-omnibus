@@ -3,10 +3,16 @@
 # run's the actual build and creates a package via fpm.
 #
 # this should be run inside a vm on the target platform.
-# normally called from bootstrap.sh
+# normally called from shim.sh (via vagrant ssh -c)
+
+
+echo -e "############################################\nBUILD STARTED - `date`\n############################################"
+echo
 
 export ROOT=$(readlink -f $(dirname $0)/..)
 cd $ROOT
+
+bundle install || exit 1
 
 # need bixby-agent checked out for installing it's gem deps
 mkdir -p tmp
@@ -29,9 +35,23 @@ fi
 
 bundle exec omnibus build project bixby
 
-if [[ -d /mnt/pkg/ ]]; then
-  cp -fa pkg/* /mnt/pkg/
+if [ -d $ROOT/pkg/ ]; then
+
+  if [[ -d /mnt/pkg/ ]]; then
+    cp -fa pkg/* /mnt/pkg/
+  fi
+
+  echo "Packages:\n---------"
+  cd
+  ls -l bixby-omnibus/pkg/
+
+else
+  echo "failed to build package"
+
 fi
 
-# cleanup
+echo
+echo
+echo -e "#############################################\nBUILD FINISHED - `date`\n#############################################"
+
 unset ROOT

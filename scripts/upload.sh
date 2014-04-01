@@ -33,6 +33,23 @@ if [[ -z `which s3cp 2>/dev/null` ]]; then
   gem install s3cp --no-ri --no-rdoc
 fi
 
+
+# CentOS release 5.10
+# Ubuntu 13.04
+issue=`cat /etc/issue`
+dir=""
+if [[ $issue =~ ^CentOS ]]; then
+  dir="centos"
+  ver=$(echo $issue | head -n 1 | perl -ne '/([0-9]+)\.[0-9]+/; print $1')
+  dir="$dir/$ver"
+
+elif [[ $issue =~ ^Ubuntu ]]; then
+  dir="ubuntu"
+  ver=$(echo $issue | head -n 1 | perl -ne '/([0-9]+\.[0-9]+)/; print $1')
+  dir="$dir/$ver"
+fi
+
+
 echo "* uploading packages"
 cd $PKGDIR
-s3cp --max-attempts 3 * s3://s3.bixby.io/agent/ && echo "* done"
+s3cp --max-attempts 3 * s3://s3.bixby.io/agent/$dir/ && echo "* done"

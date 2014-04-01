@@ -11,6 +11,10 @@ Vagrant.configure("2") do |config|
     "ubuntu-10.04-x86_64" => "ami-2fa58046",
     "ubuntu-12.04-i386"   => "ami-c5a98cac",
     "ubuntu-12.04-x86_64" => "ami-d9a98cb0",
+    "ubuntu-13.04-i386"   => "ami-931524fa",
+    "ubuntu-13.04-x86_64" => "ami-951524fc",
+    "ubuntu-13.10-i386"   => "ami-5725263e",
+    "ubuntu-13.10-x86_64" => "ami-2f252646",
 
     # Digital Ocean
     "centos-5.10-i386"    => "CentOS 5.8 x32",
@@ -47,9 +51,19 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define("testing") do |cfg|
+    cfg.vm.provider :virtualbox do |vb, override|
+      # see: https://github.com/opscode/bento
+      override.vm.box     = "ubuntu-12.04-x86_64"
+      override.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box"
+    end
+  end
+
 
 
   # common settings
+
+  config.vm.provision "shell", :privileged => false, :path => "scripts/bootstrap.sh"
 
   # for vagrant-vbguest plugin
   # https://github.com/dotless-de/vagrant-vbguest
@@ -78,7 +92,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :aws do |aws, override|
     aws.region          = "us-east-1"
-    aws.instance_type   = "c1.medium"
+    aws.instance_type   = "c3.large"
     aws.security_groups = %w{ssh}
 
     override.vm.box     = "dummy"

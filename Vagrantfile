@@ -20,6 +20,8 @@ Vagrant.configure("2") do |config|
     # Amazon Linux
     "amazon-2013.9-i386"   => "ami-d7a18dbe",
     "amazon-2013.9-x86_64" => "ami-bba18dd2",
+    "amazon-2014.3-i386"   => "ami-4b726522",
+    "amazon-2014.3-x86_64" => "ami-2f726546",
 
     # Digital Ocean
     "centos-5.10-i386"    => "CentOS 5.8 x32",

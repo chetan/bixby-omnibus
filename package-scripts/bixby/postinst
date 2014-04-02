@@ -6,6 +6,22 @@ url="https://s3.bixby.io"
 
 BIXBY_HOME=/opt/bixby
 
+fetch() {
+  if [[ -n `which curl 2>/dev/null` ]]; then
+    if [[ -n "$2" ]]; then
+      \curl -sL $1 -o "$2"
+    else
+      \curl -sL $1
+    fi
+  elif [[ -n `which wget 2>/dev/null` ]]; then
+    if [[ -n "$2" ]]; then
+      \wget -q $1 -O "$2"
+    else
+      \wget -q $1 -O -
+    fi
+  fi
+}
+
 bootstrap_repo() {
   if [ -d /opt/bixby/repo ]; then
     return 0;
@@ -14,10 +30,10 @@ bootstrap_repo() {
   cd $BIXBY_HOME
   mkdir repo
   cd repo
-  ver=`\\curl -sL $url/latest-repo`
+  ver=$(fetch $url/latest-repo)
   pkg="repo-$ver.tar.gz"
   echo "downloading $pkg"
-  wget -q $url/repo/$pkg
+  fetch $url/repo/$pkg $pkg
   tar -xzf $pkg
   mv bixby-repo vendor
   rm -f $pkg

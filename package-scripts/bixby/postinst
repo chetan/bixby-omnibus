@@ -6,7 +6,7 @@ url="https://s3.bixby.io"
 
 BIXBY_HOME=/opt/bixby
 
-function bootstrap_repo() {
+bootstrap_repo() {
   if [ -d /opt/bixby/repo ]; then
     return 0;
   fi
@@ -25,11 +25,11 @@ function bootstrap_repo() {
   return 0
 }
 
-function is_registered {
+is_registered() {
   [[ -f $BIXBY_HOME/etc/bixby.yml && -f $BIXBY_HOME/etc/server.pub ]]
 }
 
-function upgrade_bixby() {
+upgrade_bixby() {
   if [[ ! -f /etc/init.d/bixby ]]; then
     # install init script & god confs
     cd $BIXBY_HOME

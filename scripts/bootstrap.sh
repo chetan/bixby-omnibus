@@ -180,7 +180,7 @@ cd ruby-install-0.4.1/
 sudo make install
 cd ..
 sudo rm -rf ruby-install-*
-sudo /usr/local/bin/ruby-install -i /usr/local ruby 1.9.3-p545
+sudo /usr/local/bin/ruby-install -i /usr/local ruby 1.9.3-p545 -- --disable-install-doc
 sudo /usr/local/bin/gem install --no-ri --no-rdoc bundler -v 1.5.3
 
 # setup base dirs

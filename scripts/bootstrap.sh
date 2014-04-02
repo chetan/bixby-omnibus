@@ -141,8 +141,8 @@ if [[ -z `which gcc 2>/dev/null` ]]; then
   if is_ubuntu; then
     as_root apt-get -qqy install build-essential
 
-  elif is_centos; then
-    as_root yum -q -y groupinstall "Development tools"
+  elif is_centos || is_amazon; then
+    as_root yum -q -y groupinstall "Development Tools"
 
   else
     unknown_distro

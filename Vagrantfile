@@ -7,6 +7,7 @@ Vagrant.configure("2") do |config|
 
   boxes = {
     # Amazon EC2
+    # Ubuntu
     "ubuntu-10.04-i386"   => "ami-25a5804c",
     "ubuntu-10.04-x86_64" => "ami-2fa58046",
     "ubuntu-12.04-i386"   => "ami-c5a98cac",
@@ -15,6 +16,10 @@ Vagrant.configure("2") do |config|
     "ubuntu-13.04-x86_64" => "ami-951524fc",
     "ubuntu-13.10-i386"   => "ami-5725263e",
     "ubuntu-13.10-x86_64" => "ami-2f252646",
+
+    # Amazon Linux
+    "amazon-2013.9-i386"   => "ami-d7a18dbe",
+    "amazon-2013.9-x86_64" => "ami-bba18dd2",
 
     # Digital Ocean
     "centos-5.10-i386"    => "CentOS 5.8 x32",
@@ -37,7 +42,16 @@ Vagrant.configure("2") do |config|
 
       # AWS
       cfg.vm.provider :aws do |aws, override|
-        override.ssh.username = (distro =~ /ubuntu/ ? "ubuntu" : "root")
+
+        override.ssh.username =
+          if distro =~ /ubuntu/ then
+            "ubuntu"
+          elsif distro =~ /centos/ then
+            "root"
+          elsif distro =~ /amazon/ then
+            "ec2-user"
+          end
+
         aws.ami  = ami
         aws.tags = { "Name" => "bixby-build-#{distro}" }
       end

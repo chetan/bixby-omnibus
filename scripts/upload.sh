@@ -38,16 +38,26 @@ fi
 # Ubuntu 13.04
 issue=`cat /etc/issue`
 dir=""
+a='^Amazon Linux AMI'
 if [[ $issue =~ ^CentOS ]]; then
   dir="centos"
   ver=$(echo $issue | head -n 1 | perl -ne '/([0-9]+)\.[0-9]+/; print $1')
-  dir="$dir/$ver"
+
+elif [[ $issue =~ $a ]]; then
+  dir="amazon"
+  ver=$(echo $issue | head -n 1 | perl -ne '/([0-9]+\.[0-9]+)/; print $1')
+  # remove 'el2014' from filenames
+  # bixby-0.2.4-1.el2014.x86_64.rpm -> bixby-0.2.4-1.x86_64.rpm
+  for f in `ls bixby*.rpm bixby*.metadata.json 2>/dev/null`; do
+    nf=$(echo $f | sed -e "s/el[0-9]*\.//")
+    mv $f $nf
+  done
 
 elif [[ $issue =~ ^Ubuntu ]]; then
   dir="ubuntu"
   ver=$(echo $issue | head -n 1 | perl -ne '/([0-9]+\.[0-9]+)/; print $1')
-  dir="$dir/$ver"
 fi
+dir="$dir/$ver"
 
 
 echo "* uploading packages"

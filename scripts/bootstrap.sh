@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # kickoff the build on a target distro (e.g. within a VM)
 
@@ -27,6 +27,11 @@ is_centos() {
   [[ $issue =~ ^CentOS ]]
 }
 
+is_amazon() {
+  a='^Amazon Linux AMI'
+  [[ $issue =~ $a ]]
+}
+
 is_ubuntu() {
   [[ $issue =~ ^Ubuntu ]]
 }
@@ -34,7 +39,7 @@ is_ubuntu() {
 unknown_distro() {
     echo
     echo
-    echo "ERROR: only Ubuntu and CentOS are currently supported!"
+    echo "ERROR: only Ubuntu, CentOS, and Amazon Linux are currently supported!"
     echo
     exit 1
 }
@@ -87,7 +92,7 @@ fi
 
 # make sure apt/yum are fresh
 is_ubuntu && as_root apt-get -qqy update > /dev/null
-is_centos && as_root yum -q -y check-update >> /dev/null
+(is_centos || is_amazon) && as_root yum -q -y check-update > /dev/null
 
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
   yum -q -y install sudo
@@ -95,14 +100,14 @@ fi
 
 # Force APT to use our http_proxy
 # Note that Yum on CentOS will pickup and use http_proxy from the ENV
-if is_ubuntu && [[ ! -z "$http_proxy" ]] && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
-  echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > /tmp/30apt-proxy
-  as_root mv /tmp/30apt-proxy /etc/apt/apt.conf.d
-fi
+# if is_ubuntu && [[ ! -z "$http_proxy" ]] && [[ ! -f /etc/apt/apt.conf.d/30apt-proxy ]]; then
+#   echo "Acquire { Retries \"0\"; HTTP { Proxy \"$http_proxy\"; }; };" > /tmp/30apt-proxy
+#   as_root mv /tmp/30apt-proxy /etc/apt/apt.conf.d
+# fi
 
 if [[ -z `which wget 2>/dev/null` ]]; then
   echo "installing wget (via sudo)"
-  is_centos && as_root yum -q -y install wget
+  (is_centos || is_amazon) && as_root yum -q -y install wget
   is_ubuntu && as_root apt-get -qqy install wget
 fi
 
@@ -112,7 +117,9 @@ is_centos && install_rpmforge
 # pre-emptively fix grub
 # grub sometimes barfs when a new vm is created so fix it up
 # may have an error when grub is upgraded on e.g. ubuntu 12
-as_root grub-install /dev/sda > /dev/null
+if [[ -n `which grub-install 2>/dev/null` ]]; then
+  as_root grub-install /dev/sda > /dev/null
+fi
 
 # update system
 if is_ubuntu; then
@@ -123,6 +130,7 @@ if is_ubuntu; then
   as_root apt-get -qqy autoclean
 
 elif is_centos; then
+  # we don't upgrade amazon here to avoid upgrading to a newer release
   as_root yum -q -y upgrade
 fi
 
@@ -146,7 +154,7 @@ if is_ubuntu; then
   as_root apt-get -qqy install libssl-dev zlib1g-dev libreadline-dev libcurl4-openssl-dev libxslt1-dev libxml2-dev ntpdate curl screen
   as_root ntpdate ntp.ubuntu.com
 
-elif is_centos; then
+elif is_centos || is_amazon; then
   as_root yum -q -y install openssl-devel zlib-devel readline-devel libxslt-devel libxml2-devel ntp screen
   as_root /usr/sbin/ntpdate ntp.ubuntu.com
 
@@ -157,7 +165,7 @@ if [[ -z `which git 2>/dev/null` ]]; then
   echo "installing git (via sudo)"
   if is_ubuntu; then
     as_root apt-get -qqy install git-core
-  elif is_centos; then
+  elif is_centos || is_amazon; then
     as_root yum -q -y install git
   else
     unknown_distro
@@ -172,8 +180,8 @@ cd ruby-install-0.4.1/
 sudo make install
 cd ..
 sudo rm -rf ruby-install-*
-sudo ruby-install -i /usr/local ruby 1.9.3-p545
-sudo gem install --no-ri --no-rdoc bundler -v 1.5.3
+sudo /usr/local/bin/ruby-install -i /usr/local ruby 1.9.3-p545
+sudo /usr/local/bin/gem install --no-ri --no-rdoc bundler -v 1.5.3
 
 # setup base dirs
 echo "creating /opt/bixby (via sudo)"

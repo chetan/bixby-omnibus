@@ -10,4 +10,4 @@ build_iteration   1
 
 override :ruby, :version => "2.1.1"
 
-dependencies      %w{ preparation libffi ruby rubygems rbnacl bundler bixby-agent version-manifest }
+dependencies      %w{ preparation ruby rubygems rbnacl bundler libffi bixby-agent version-manifest }

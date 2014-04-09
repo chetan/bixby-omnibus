@@ -72,6 +72,8 @@ Vagrant.configure("2") do |config|
       # see: https://github.com/opscode/bento
       override.vm.box     = "ubuntu-12.04-x86_64"
       override.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box"
+
+      override.vm.synced_folder ".", "/opt/bixby-omnibus", :disabled => false
     end
   end
 

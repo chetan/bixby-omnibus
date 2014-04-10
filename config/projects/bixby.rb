@@ -10,4 +10,12 @@ build_iteration   1
 
 override :ruby, :version => "2.1.1"
 
-dependencies      %w{ preparation ruby rubygems rbnacl bundler libffi bixby-agent version-manifest }
+dependencies      %w{ preparation ruby rubygems libffi rbnacl bundler bixby-agent version-manifest }
+
+if `cat /etc/issue` =~ /Amazon Linux/ then
+  # $ rpm -qa glibc
+  # glibc-2.12-1.107.43.amzn1.x86_64
+  `rpm -qa glibc` =~ /^glibc-(\d+\.\d+)/
+  glibc_ver = $1
+  runtime_dependency "glibc = #{glibc_ver}"
+end

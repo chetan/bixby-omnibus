@@ -55,15 +55,22 @@ upgrade_bixby() {
     cp -a etc/bixby-god.initd /etc/init.d/bixby
     chmod 755 /etc/init.d/bixby
 
-    # install system service
-    issue=`cat /etc/issue`
-    [[ $issue =~ ^Ubuntu ]] && [[ `which update-rc.d` ]]  && update-rc.d bixby defaults
-    [[ $issue =~ ^CentOS ]] && [[ `which chkconfig` ]]    && chkconfig --add bixby && chkconfig bixby on
-
     # setup god configs
     mkdir -p $BIXBY_HOME/etc
     cp -a etc/bixby.god etc/god.d $BIXBY_HOME/etc/
     cd $BIXBY_HOME
+
+    # install system service
+    issue=`cat /etc/issue`
+    amzn='^Amazon Linux AMI'
+    centos='^CentOS'
+    ubuntu='^Ubuntu'
+    if [[ $issue =~ $ubuntu && `which update-rc.d 2>/dev/null` ]]; then
+      update-rc.d bixby defaults
+    elif [[ ($issue =~ $centos || $issue =~ $amzn) && `which chkconfig 2>/dev/null` ]]; then
+      chkconfig --add bixby
+      chkconfig bixby on
+    fi
 
     if is_registered; then
       # start god when already registered. starts bixby-agent if not already running

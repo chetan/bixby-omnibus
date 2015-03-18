@@ -17,7 +17,7 @@ build do
     end
   end
 
-  %w{facter mixlib-cli highline uuidtools god daemons}.each do |g|
+  %w{facter mixlib-cli uuidtools god daemons}.each do |g|
     gem "install #{g} -v #{Bixby.gem_version(g)} --no-rdoc --no-ri", :env => Bixby.omnibus_env
   end
 

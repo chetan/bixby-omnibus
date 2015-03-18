@@ -31,7 +31,7 @@ ver=$(echo $current | perl -ne '/^(.*?)\+.*$/; print $1')
 if [[ "$ver" != "" ]]; then
   echo "* renaming packages"
   for f in `ls bixby*.deb bixby*.rpm bixby*.metadata.json 2>/dev/null`; do
-    nf=$(echo $f | sed -e "s/$ver[+0-9]*/$ver$BETA/")
+    nf=$(echo $f | sed -e "s/$ver[+0-9]*/$ver$beta/")
     mv $f $nf
   done
 fi

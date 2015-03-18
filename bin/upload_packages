@@ -12,7 +12,7 @@ if [[ "$AWS_SECRET_ACCESS_KEY" == "" ]]; then
 fi
 [[ $fail -eq 1 ]] && exit 1
 
-if [[ -z "$DISTROS" ]];
+if [[ -z "$DISTROS" ]]; then
   # allow passing in DISTROS var, default to all
   DISTROS=$(bin/build --list | grep -v Box | awk '{print $2}' | grep -v test)
 fi

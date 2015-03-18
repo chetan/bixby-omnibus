@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/omnibus-software.git
-  revision: ea9e3441fe7b6f3079cf8173bbdf1ba0aead6d70
+  revision: 55da596aba78975ca2fef0713f2046eec3bab247
   branch: bixby
   specs:
     omnibus-software (0.0.9)
@@ -99,7 +99,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk
-  bundler (~> 1.5.3)
+  bundler (~> 1.8)
   chronic_duration
   ffi (~> 1.3)
   mixlib-shellout

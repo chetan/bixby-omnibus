@@ -6,7 +6,7 @@ gem "omnibus-software",     :github => "chetan/omnibus-software", :branch => "bi
 gem "omnibus-software-gpg", :github => "chetan/omnibus-software-gpg"
 
 group :development do
-  gem "bundler", "~> 1.5.3"
+  gem "bundler", "~> 1.8"
   gem "unf"
   gem "vagrant-wrapper"
   gem "mixlib-shellout"

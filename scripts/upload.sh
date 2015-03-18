@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# script for uploading package files to s3
+# run on a guest system (build server)
+# called from bin/upload_packages helper
+
 PKGDIR="$HOME/bixby-omnibus/pkg/"
 
 cd $PKGDIR
@@ -16,13 +20,18 @@ fi
 # becomes
 # bixby_0.2.0-1.ubuntu.12.04_amd64.deb
 
+beta=""
+if [[ "$BETA" != "" ]]; then
+  beta=".$BETA"
+fi
+
 current=$(ls *.deb *.rpm 2>/dev/null | head -n 1 | perl -ne '/bixby.(.*?-1)/; print $1')
 ver=$(echo $current | perl -ne '/^(.*?)\+.*$/; print $1')
 
 if [[ "$ver" != "" ]]; then
   echo "* renaming packages"
   for f in `ls bixby*.deb bixby*.rpm bixby*.metadata.json 2>/dev/null`; do
-    nf=$(echo $f | sed -e "s/$ver[+0-9]*/$ver/")
+    nf=$(echo $f | sed -e "s/$ver[+0-9]*/$ver$BETA/")
     mv $f $nf
   done
 fi

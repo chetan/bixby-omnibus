@@ -8,7 +8,7 @@ install_path      "/opt/bixby"
 build_version     "placeholder" # will be set in bixby-agent package
 build_iteration   1
 
-override :ruby, :version => "2.1.1"
+override :ruby, :version => "2.2.0"
 
 dependencies      %w{ preparation ruby rubygems libffi rbnacl bundler bixby-agent version-manifest }
 

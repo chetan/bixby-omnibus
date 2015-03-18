@@ -3,7 +3,7 @@ name "bixby-common"
 default_version ENV["BIXBY_GIT_REV"] || "LAST_TAG"
 always_build true
 
-dependencies %w{ rubygems bundler api-auth }
+dependencies %w{ rubygems bundler bixby-auth }
 
 source :git => "https://github.com/chetan/bixby-common.git"
 

@@ -2,6 +2,7 @@
 name "bixby"
 maintainer "Pixelcop Research, Inc."
 homepage "https://bixby.io"
+description "Bixby agent service"
 
 replaces          "bixby"
 install_path      "/opt/bixby"

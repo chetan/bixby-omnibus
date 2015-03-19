@@ -21,6 +21,11 @@ module Bixby
       :long        => "--list",
       :description => "List available boxes"
 
+    option :provider,
+      :short       => "-p BOX",
+      :long        => "--provider BOX",
+      :description => "Get the preferred provider for the given box"
+
     option :revision,
       :short       => "-r REF",
       :long        => "--revision REF",

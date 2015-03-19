@@ -2,13 +2,23 @@
 # Temp workaround to read the list of boxes from a Vagrantfile
 module Vagrant
 
+  class Binder
+    def get_binding
+      binding
+    end
+  end
+
   # Read the list of boxes from the Vagrantfile
   def self.get_boxes
-    eval File.read("Vagrantfile")
+    eval File.read("Vagrantfile"), Binder.new.get_binding, "Vagrantfile"
     return Vagrant::VM.boxes
   end
 
   class Provider
+    attr_reader :type
+    def initialize(type)
+      @type = type
+    end
     def method_missing(meth, *args)
     end
     def gui=(val)
@@ -17,24 +27,47 @@ module Vagrant
     end
   end
 
+  class Machine
+    attr_reader :config, :name
+    def initialize(box)
+      @name = box
+      @config = Config.new
+    end
+  end
+
   class VM
+
     class << self
-      attr_accessor :boxes
+      def boxes
+        @boxes ||= []
+      end
     end
+
+    attr_reader :providers
+
     def initialize
-      self.class.boxes = []
+      @providers = []
     end
+
     def define(box)
-      self.class.boxes << box
+      machine = Machine.new(box)
+      self.class.boxes << machine
+      yield(machine.config)
     end
+
     def boxes
       self.class.boxes
     end
+
     def provider(type, &block)
-      yield Provider.new, Dummy.new
+      provider = Provider.new(type)
+      override = Dummy.new
+      yield(provider, override)
+
+      @providers << provider
+      return provider
     end
-    def synced_folder(*args)
-    end
+
     def method_missing(m, *a)
     end
   end

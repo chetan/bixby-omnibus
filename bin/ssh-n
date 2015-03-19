@@ -11,7 +11,7 @@ if [[ "$IDX" == "" ]]; then
   read IDX
 fi
 
-DISTRO=$(bin/build --list | grep -v Box | egrep "^ ${IDX}:" | awk '{print $2}')
+DISTRO=$(bin/build --list | grep -v Box | egrep "^ +${IDX}:" | awk '{print $2}')
 if [ -z "$DISTRO" ]; then
   echo "$DISTROY is an invalid box number!"
   exit 1

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+CMD="$1"
+IDX="$2"
+args="${@:3}"
+
+if [[ "$CMD" == "" ]]; then
+  echo "usage: $0 <up|halt|destroy> #"
+  exit 1
+fi
+
+if [[ "$IDX" == "" ]]; then
+  echo "connect to the specified box by number"
+  echo "usage: $0 <up|halt|destroy> #"
+  echo
+  $(dirname $(readlink -f $0))/build --list | grep -v testing
+  echo
+  echo "or 'all' to operate on all boxes"
+  echo
+  echo -n "choose a box number: "
+  read IDX
+fi
+
+if [[ "$IDX" == "all" ]]; then
+  DISTROS=$(bin/build --list | grep -v Box | grep -v testing | awk '{print $2}')
+else
+  DISTROS=$(bin/build --list | grep -v Box | grep -v testing | egrep "^ +${IDX}:" | awk '{print $2}')
+fi
+
+for distro in $DISTROS; do
+  if [[ "$CMD" == "destroy" ]]; then
+    # do this async/in the bg because of issues with destroy hanging forever
+    # on digital ocean images
+    # https://github.com/smdahlen/vagrant-digitalocean/issues/72
+    exec vagrant destroy $distro &
+
+  elif [[ "$CMD" == "up" ]]; then
+    provider=$(bin/build --provider $distro)
+    exec vagrant up $distro --provider $provider
+
+  elif [[ "$CMD" == "ssh" ]]; then
+    echo "ssh $distro -- $args"
+    exec vagrant ssh $distro -- "$args"
+
+  elif [[ "$CMD" == "halt" ]]; then
+    exec vagrant halt $distro
+
+  else
+    exec vagrant $CMD $distro $args
+  fi
+done

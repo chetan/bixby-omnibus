@@ -1,6 +1,46 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+def virtualbox(cfg, distro, ami)
+  cfg.vm.provider :virtualbox do |vb, override|
+    # see: https://github.com/opscode/bento
+    url = distro.gsub(/\-x86_64/, '')
+    override.vm.box     = distro
+    override.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_#{url}_provisionerless.box"
+  end
+end
+
+def aws(cfg, distro, ami)
+  cfg.vm.provider :aws do |aws, override|
+    override.ssh.username =
+      if distro =~ /ubuntu/ then
+        "ubuntu"
+      elsif distro =~ /centos-7/ && ami =~ /^ami/ then
+        "centos"
+      elsif distro =~ /centos/ then
+        "root"
+      elsif distro =~ /amazon/ then
+        "ec2-user"
+      end
+
+    if ami =~ /i386/ then
+      aws.instance_type = "c1.medium"
+    else
+      aws.instance_type = "c3.large"
+    end
+
+    aws.ami  = ami
+    aws.tags = { "Name" => "bixby-build-#{distro}" }
+  end
+end
+
+def digitalocean(cfg, distro, ami)
+  cfg.vm.provider :digital_ocean do |ocean, override|
+    override.vm.hostname = "bixby-build-" + distro.gsub(/x86_64/, 'x64')
+    ocean.image = ami
+  end
+end
+
 Vagrant.configure("2") do |config|
 
   # ubuntu AMIs: https://cloud-images.ubuntu.com/locator/ec2/
@@ -8,65 +48,54 @@ Vagrant.configure("2") do |config|
   boxes = {
     # Amazon EC2
     # Ubuntu
-    "ubuntu-10.04-i386"   => "ami-25a5804c",
-    "ubuntu-10.04-x86_64" => "ami-2fa58046",
-    "ubuntu-12.04-i386"   => "ami-c5a98cac",
-    "ubuntu-12.04-x86_64" => "ami-d9a98cb0",
+    "ubuntu-10.04-i386"   => "ami-25a5804c", # LTS
+    "ubuntu-10.04-x86_64" => "ami-2fa58046", # LTS
+    "ubuntu-12.04-i386"   => "ami-c5a98cac", # LTS
+    "ubuntu-12.04-x86_64" => "ami-d9a98cb0", # LTS
     "ubuntu-13.04-i386"   => "ami-931524fa",
     "ubuntu-13.04-x86_64" => "ami-951524fc",
     "ubuntu-13.10-i386"   => "ami-5725263e",
     "ubuntu-13.10-x86_64" => "ami-2f252646",
+    "ubuntu-14.04-i386"   => "ami-988ad1f0", # LTS
+    "ubuntu-14.04-x86_64" => "ami-808ad1e8", # LTS
+    "ubuntu-14.10-i386"   => "ami-04793a6c",
+    "ubuntu-14.10-x86_64" => "ami-06793a6e",
 
     # Amazon Linux
     "amazon-2013.09-i386"   => "ami-d7a18dbe",
     "amazon-2013.09-x86_64" => "ami-bba18dd2",
     "amazon-2014.03-i386"   => "ami-4b726522",
     "amazon-2014.03-x86_64" => "ami-2f726546",
+    "amazon-2014.09-i386"   => "ami-0883c760",
+    "amazon-2014.09-x86_64" => "ami-8e682ce6",
 
-    # Digital Ocean
+    # CentOS - on Digital Ocean & AWS
     "centos-5.10-i386"    => "CentOS 5.8 x32",
     "centos-5.10-x86_64"  => "CentOS 5.8 x64",
-    "centos-6.4-i386"     => "CentOS 6.4 x32",
-    "centos-6.4-x86_64"   => "CentOS 6.4 x64",
+    "centos-6-i386"       => "ami-0e173b66",
+    "centos-6-x86_64"     => "ami-06173b6e",
+    "centos-7-x86_64"     => "ami-3c173b54",   # no i386 build avail
   }
 
+  # Create boxes
   boxes.each do |distro, ami|
     config.vm.define(distro) do |cfg|
 
-      # VirtualBox
-      cfg.vm.provider :virtualbox do |vb, override|
-        # see: https://github.com/opscode/bento
-        url = distro.gsub(/\-x86_64/, '')
-        override.vm.box     = distro
-        override.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_#{url}_provisionerless.box"
+      # configure provider based on the image type
+      if ami =~ /^ami/ then
+        aws(cfg, distro, ami)
+      else
+        digitalocean(cfg, distro, ami)
       end
 
+      # always configure vbox
+      virtualbox(cfg, distro, ami)
 
-      # AWS
-      cfg.vm.provider :aws do |aws, override|
-
-        override.ssh.username =
-          if distro =~ /ubuntu/ then
-            "ubuntu"
-          elsif distro =~ /centos/ then
-            "root"
-          elsif distro =~ /amazon/ then
-            "ec2-user"
-          end
-
-        aws.ami  = ami
-        aws.tags = { "Name" => "bixby-build-#{distro}" }
-      end
-
-
-      # Digital Ocean
-      cfg.vm.provider :digital_ocean do |ocean, override|
-        override.vm.hostname = "bixby-build-" + distro.gsub(/x86_64/, 'x64')
-        ocean.image = ami
-      end
     end
   end
 
+
+  # Create a box dedicated to testing
   config.vm.define("testing") do |cfg|
     cfg.vm.provider :virtualbox do |vb, override|
       # see: https://github.com/opscode/bento
@@ -95,6 +124,7 @@ Vagrant.configure("2") do |config|
 
   # Enable SSH agent forwarding for git clones
   config.ssh.forward_agent = true
+  config.ssh.pty = true
 
   config.vm.provider :virtualbox do |vb|
     vb.gui = false # Boot headless
@@ -111,6 +141,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider :aws do |aws, override|
     aws.region          = "us-east-1"
     aws.instance_type   = "c3.large"
+    # aws.instance_type   = "c1.medium"
     aws.security_groups = %w{ssh}
 
     override.vm.box     = "dummy"

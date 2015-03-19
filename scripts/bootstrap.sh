@@ -19,10 +19,26 @@
 
 # END CONFIG -------------------------------------------------------------------
 
-# set -e
+set -e
+
+if [[ -f ~/bootstrapped ]]; then
+  echo "already bootstrapped, updating bixby-omnibus and exiting"
+  cd
+  cd bixby-omnibus
+  git reset --hard -q
+  git pull -q
+  bundle install --quiet
+  exit
+fi
+
 set -x
 
-issue=`cat /etc/issue`
+if [[ -e /etc/system-release ]]; then
+  issue=`cat /etc/system-release`
+else
+  issue=`cat /etc/issue`
+fi
+
 is_centos() {
   [[ $issue =~ ^CentOS ]]
 }
@@ -66,6 +82,8 @@ install_rpmforge() {
     else
       wget -q http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
     fi
+  elif [[ $issue =~ 'release 7' ]]; then
+    wget -q http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el7.rf.x86_64.rpm
   else
     unknown_distro
   fi
@@ -91,8 +109,14 @@ if [[ ! `sudo env | egrep ^PATH | egrep '[:=]?/usr/local/bin'` ]]; then
 fi
 
 # make sure apt/yum are fresh
-is_ubuntu && as_root apt-get -qqy update > /dev/null
-(is_centos || is_amazon) && as_root yum -q -y check-update > /dev/null
+if is_ubuntu; then
+  as_root apt-get -qqy update > /dev/null
+fi
+if is_centos || is_amazon; then
+  set +e
+  as_root yum -q -y check-update > /dev/null
+  set -e
+fi
 
 if is_centos && [[ -z `which sudo 2>/dev/null` ]]; then
   yum -q -y install sudo
@@ -118,7 +142,10 @@ is_centos && install_rpmforge
 # grub sometimes barfs when a new vm is created so fix it up
 # may have an error when grub is upgraded on e.g. ubuntu 12
 if [[ -n `which grub-install 2>/dev/null` ]]; then
-  as_root grub-install /dev/sda > /dev/null
+  set +e
+  rootdev=$(df | egrep '/$' | awk '{print $1}')
+  as_root grub-install $rootdev > /dev/null
+  set -e
 fi
 
 # update system
@@ -156,7 +183,9 @@ if is_ubuntu; then
 
 elif is_centos || is_amazon; then
   as_root yum -q -y install openssl-devel zlib-devel readline-devel libxslt-devel libxml2-devel ntp screen
+  set +e
   as_root /usr/sbin/ntpdate ntp.ubuntu.com
+  set -e
 
 fi
 
@@ -174,9 +203,9 @@ fi
 
 
 # install ruby
-wget -O ruby-install-0.4.1.tar.gz https://github.com/postmodern/ruby-install/archive/v0.4.1.tar.gz
-tar -xzf ruby-install-0.4.1.tar.gz
-cd ruby-install-0.4.1/
+wget -O ruby-install-0.5.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.5.0.tar.gz
+tar -xzf ruby-install-0.5.0.tar.gz
+cd ruby-install-0.5.0/
 sudo make install
 cd ..
 sudo rm -rf ruby-install-*
@@ -196,3 +225,6 @@ cd
 git clone https://github.com/chetan/bixby-omnibus.git
 cd bixby-omnibus
 bundle install
+
+touch ~/bootstrapped
+

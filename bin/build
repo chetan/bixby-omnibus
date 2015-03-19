@@ -9,9 +9,14 @@ boxes = Vagrant.get_boxes()
 
 # --list
 if opts[:list] then
+  def s(i)
+    i=i.to_s
+    i=" #{i}" if i.length < 2
+    "  #{i}:"
+  end
   puts "Boxes:"
   boxes.each_with_index do |box, i|
-    puts " #{i+1}: #{box}"
+    puts "#{s(i)} #{box}"
   end
   exit
 end

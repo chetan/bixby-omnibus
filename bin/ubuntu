@@ -9,7 +9,8 @@ fi
 DISTROS=$(bin/build --list | grep -v Box | awk '{print $2}' | grep ubuntu)
 for distro in $DISTROS; do
   if [[ "$CMD" == "up" ]]; then
-    vagrant up $distro --provider aws
+    echo "vagrant up $distro --provider aws &"
+    vagrant up $distro --provider aws &
   elif [[ "$CMD" == "ssh" ]]; then
     echo "$distro: ${@:2}"
     vagrant ssh $distro -- "${@:2}"

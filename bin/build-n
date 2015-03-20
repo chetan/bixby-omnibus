@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+DISTROS=($(bin/select_distros))
+DISTROS=$(echo ${DISTROS[@]} | sed -e 's/ /,/')
+
+exec bin/build --boxes "$DISTROS" $*

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-DISTROS=$(bin/build --list | grep -v Box | awk '{print $2}')
+IDX="$@"
+DISTROS=$(bin/select_distros "$IDX")
 
 for distro in $DISTROS; do
   echo $distro:

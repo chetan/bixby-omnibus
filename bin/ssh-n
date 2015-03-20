@@ -1,21 +1,8 @@
 #!/usr/bin/env bash
 
 IDX="$1"
-if [[ "$IDX" == "" ]]; then
-  echo "connect to the specified box by number"
-  echo "usage: $0 <box number>"
-  echo
-  $(dirname $(readlink -f $0))/build --list
-  echo
-  echo -n "choose a box number: "
-  read IDX
-fi
-
-DISTRO=$(bin/build --list | grep -v Box | egrep "^ +${IDX}:" | awk '{print $2}')
-if [ -z "$DISTRO" ]; then
-  echo "$DISTROY is an invalid box number!"
-  exit 1
-fi
+DISTROS=($(bin/select_distros "$IDX"))
+DISTRO=${DISTROS[@]:0:1}
 
 echo exec vagrant ssh $DISTRO ${@:2}
 exec vagrant ssh $DISTRO ${@:2}

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Helper script for selecting distros via number or text input
+# usage:
+#
+# DISTROS=($(bin/select_distros "$IDX"))  # get all selections as a list
+# FIRST_DISTRO=${DISTROS[@]:0:1}          # get first selection
+#
+# for distro in $DISTROS; do              # loop
+#   echo $distro
+# done
+#
+# DISTROS="${DISTROS[@]"                  # conver to string
+
+DISTROS=$DISTROS
+IDX="$@"
+
+# redirect STDOUT to STDERR
+exec 3>&1
+exec 1>&2
+
+select_distros() {
+
+  DISTROS=( )
+
+  if [[ "$IDX" == "" ]]; then
+    echo
+    $(dirname $(readlink -f $0))/build --list
+    echo
+    echo "or 'all' to operate on all boxes"
+    echo
+    echo -n "choose box number(s): "
+    read IDX
+  fi
+
+  ALL=$"$(bin/build --list | grep -v Box)"
+
+  if [[ "$IDX" == "all" ]]; then
+    DISTROS=$(echo "$ALL" | grep -v test | awk '{print $2}')
+    return
+  fi
+
+  for i in $IDX; do
+
+    d="(amazon|centos|ubuntu|test)"
+    if [[ "$i" =~ $d ]]; then
+      # input is a string
+      DISTROS+=( "$i" )
+    else
+      # input is a number
+      DISTROS+=( $(echo "$ALL" | egrep "^ +${i}:" | awk '{print $2}') )
+    fi
+
+  done
+
+  DISTROS="${DISTROS[@]}"
+}
+
+if [[ -z "$DISTROS" ]]; then
+  select_distros
+fi
+
+exec 1>&3; # reset STDOUT
+echo "$DISTROS"

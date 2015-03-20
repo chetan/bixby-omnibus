@@ -5,27 +5,11 @@ IDX="$2"
 args="${@:3}"
 
 if [[ "$CMD" == "" ]]; then
-  echo "usage: $0 <up|halt|destroy> #"
+  echo "usage: $0 <up|halt|destroy> <box>"
   exit 1
 fi
 
-if [[ "$IDX" == "" ]]; then
-  echo "connect to the specified box by number"
-  echo "usage: $0 <up|halt|destroy> #"
-  echo
-  $(dirname $(readlink -f $0))/build --list | grep -v testing
-  echo
-  echo "or 'all' to operate on all boxes"
-  echo
-  echo -n "choose a box number: "
-  read IDX
-fi
-
-if [[ "$IDX" == "all" ]]; then
-  DISTROS=$(bin/build --list | grep -v Box | grep -v testing | awk '{print $2}')
-else
-  DISTROS=$(bin/build --list | grep -v Box | grep -v testing | egrep "^ +${IDX}:" | awk '{print $2}')
-fi
+DISTROS=$(bin/select_distros "$IDX")
 
 for distro in $DISTROS; do
   if [[ "$CMD" == "destroy" ]]; then
@@ -36,6 +20,7 @@ for distro in $DISTROS; do
 
   elif [[ "$CMD" == "up" ]]; then
     provider=$(bin/build --provider $distro)
+    echo exec vagrant up $distro --provider $provider
     exec vagrant up $distro --provider $provider
 
   elif [[ "$CMD" == "ssh" ]]; then

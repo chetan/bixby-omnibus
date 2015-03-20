@@ -45,7 +45,7 @@ fi
 
 # UPLOAD
 if [[ -z `which s3cp 2>/dev/null` ]]; then
-  sudo gem install s3cp --no-ri --no-rdoc
+  sudo env PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" gem install s3cp --no-ri --no-rdoc
 fi
 
 

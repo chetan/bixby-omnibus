@@ -8,9 +8,15 @@ PKGDIR="$HOME/bixby-omnibus/pkg/"
 
 cd $PKGDIR
 
+if [[ -e /etc/system-release ]]; then
+  issue=`cat /etc/system-release`
+else
+  issue=`cat /etc/issue`
+fi
+
 # make sure we have some packages
 if [[ `ls | wc -l` == "0" ]]; then
-  echo "no packages to upload on $(cat /etc/issue)"
+  echo "no packages to upload on $issue"
   exit 1
 fi
 
@@ -44,8 +50,8 @@ fi
 
 
 # CentOS release 5.10
+# CentOS Linux release 7.0.1406 (Core)
 # Ubuntu 13.04
-issue=`cat /etc/issue`
 dir=""
 a='^Amazon Linux AMI'
 if [[ $issue =~ ^CentOS ]]; then

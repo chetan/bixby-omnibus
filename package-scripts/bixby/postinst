@@ -61,7 +61,11 @@ upgrade_bixby() {
     cd $BIXBY_HOME
 
     # install system service
-    issue=`cat /etc/issue`
+    if [[ -e /etc/system-release ]]; then
+      issue=`cat /etc/system-release`
+    else
+      issue=`cat /etc/issue`
+    fi
     amzn='^Amazon Linux AMI'
     centos='^CentOS'
     ubuntu='^Ubuntu'

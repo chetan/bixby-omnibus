@@ -70,8 +70,8 @@ Vagrant.configure("2") do |config|
     "amazon-2014.09-x86_64" => "ami-8e682ce6",
 
     # CentOS - on Digital Ocean & AWS
-    "centos-5.10-i386"    => "CentOS 5.8 x32",
-    "centos-5.10-x86_64"  => "CentOS 5.8 x64",
+    "centos-5.10-i386"    => "centos-5-8-x32",
+    "centos-5.10-x86_64"  => "centos-5-8-x64",
     "centos-6-i386"       => "ami-0e173b66",
     "centos-6-x86_64"     => "ami-06173b6e",
     "centos-7-x86_64"     => "ami-3c173b54",   # no i386 build avail
@@ -89,7 +89,7 @@ Vagrant.configure("2") do |config|
       end
 
       # always configure vbox
-      virtualbox(cfg, distro, ami)
+      # virtualbox(cfg, distro, ami)
 
     end
   end
@@ -149,7 +149,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provider :digital_ocean do |ocean, override|
-    ocean.region = "New York 2"
+    ocean.region = "nyc2"
     ocean.size = "2GB"
     ocean.setup = true
 
